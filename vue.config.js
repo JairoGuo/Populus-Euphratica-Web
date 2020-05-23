@@ -1,0 +1,39 @@
+const path =  require('path');
+const resolve = (dir) => path.join(__dirname, dir);
+
+module.exports = {
+    devServer: {
+        open: true,
+        host: process.env.VUE_APP_URL,
+        port: process.env.VUE_APP_PORT,
+        https: false,
+        //以上的ip和端口是我们本机的;下面为需要跨域的
+        proxy: {//配置跨域
+            '/api': {
+                target: process.env.VUE_APP_API,
+                ws: true,
+                changOrigin: true,//允许跨域
+                pathRewrite: {
+                    '^/api': ''//请求的时候使用这个api就可以
+                }
+            }
+        }
+    },
+
+    // chainWebpack: (config) => {
+    //     // 添加别名
+    //     config.resolve.alias
+    //       .set('@', resolve('src'))
+    //       .set('assets', resolve('src/assets'))
+    //       .set('components', resolve('src/components'))
+    // },
+
+    configureWebpack: {
+        resolve: {
+            alias: {
+                '@': resolve('src')
+            }
+        }
+    },
+
+}

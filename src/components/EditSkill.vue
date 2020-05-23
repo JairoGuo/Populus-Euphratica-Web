@@ -20,7 +20,7 @@
 
 
       <sui-button @click="setEditStatus(editType.Skill)" floated="right">取消</sui-button>
-      <sui-button type="submit" @click="submitSkill()" color="green" floated="right">保存</sui-button>
+      <sui-button type="submit" @click="submit()" color="green" floated="right">保存</sui-button>
     </sui-form>
 
 
@@ -28,8 +28,9 @@
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex'
-  import {ACCOUNT} from "@/store/mutation-types";
+// todo: 待定改造
+  import {mapState, mapMutations, mapActions} from 'vuex'
+  import {ACCOUNT} from "@/store/types";
   export default {
     name: "EditSkill",
     data() {
@@ -37,6 +38,7 @@
         current: this.$store.state.users.skill.split(','),
 
         skill: "A,B,C",
+
         skills: [
           {key: 'angular', text: 'Angular', value: 'angular'},
           {key: 'css', text: 'CSS', value: 'css'},
@@ -60,28 +62,28 @@
       };
     },
      computed: {
-      ...mapState('account', ['editType'])
+      ...mapState('account', {
+        editType: ACCOUNT.EDIT_TYPE,
+        userInfo: ACCOUNT.USER_INFO
+      })
+    },
+    created() {
+      this.init()
     },
     methods: {
-      ...mapMutations('account', {'setEditStatus': ACCOUNT.SET_USERINFO_EDIT_STATUS}),
+      ...mapMutations('account', {
+        setEditStatus: ACCOUNT.SET_USERINFO_EDIT_STATUS,
+      }),
+      ...mapActions('account', {
+        updateUserInfo: ACCOUNT.GO_UPDATE_USERINFO
+      }),
+      init() {
+        this.skill = this.userInfo.skill
+    },
+      submit() {
 
-      submitSkill() {
-
-
-        this.axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-        this.axios.patch("/api/users/" + this.$store.state.users.username + "/",
-          {"skill": this.current.join(',')}).then(response => {
-          console.log(response)
-          console.log('suss')
-          this.axios.get("/api/users/me/").then(response => {
-            this.$store.commit("setUsers", response.data)
-            console.log(this.$store.state.users)
-          })
-          this.$store.commit("switchEditSkill")
-        }).catch(err => {
-          console.log(err)
-        })
+        this.updateUserInfo({"skill": this.current.join(',')})
+        this.setEditStatus(this.editType.Skill)
       }
     }
   }

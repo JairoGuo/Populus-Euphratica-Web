@@ -1,12 +1,13 @@
 import http from "@/utils/http";
 import URLS from "@/api/api-url";
+
 class Account {
 
-    logIn(params) {
-        console.log(params)
+    logIn(data) {
+        console.log(data)
 
         const url = URLS.ACCOUNT.LOGIN
-        return http.post(url,params)
+        return http.post(url, data)
     }
 
     logOut() {
@@ -19,13 +20,13 @@ class Account {
         return http.get(url)
     }
 
-    getUser(params) {
-        const url = URLS.ACCOUNT.USERS + params
+    getUser(username) {
+        const url = URLS.ACCOUNT.USERS + username
         return http.get(url)
 
     }
 
-    logStatus(){
+    logStatus() {
         const url = URLS.ACCOUNT.STATUS
         return http.get(url)
     }
@@ -33,6 +34,11 @@ class Account {
     getMe() {
         const url = URLS.ACCOUNT.ME
         return http.get(url)
+    }
+
+    updateUserInfo(username, data) {
+        const url = URLS.ACCOUNT.USERS + username + '/'
+        return http.patch(url, data)
     }
 
 

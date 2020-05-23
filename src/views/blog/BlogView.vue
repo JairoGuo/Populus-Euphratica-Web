@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #e9ecef" v-loading.fullscreen.lock="fullscreenLoading">
+  <div style="background-color: #e9ecef">
     <sui-container align="left">
       <sui-grid>
 
@@ -100,7 +100,6 @@
         },
         md_toc: '',
         currentHeight: document.body.clientHeight - 220,
-        fullscreenLoading: false
 
       }
 
@@ -110,12 +109,18 @@
     methods: {
       async getBlogData() {
 
-        this.fullscreenLoading = true
-        await this.axios.get("/api/blog/" + this.$route.params.id + "/").then(response => {
-          this.blog_data = response.data
-
-          this.fullscreenLoading = false
+        this.$loading.show()
+        this.$api.blog.getArticle(this.$route.params.id).then(res => {
+          this.blog_data = res.data
+          this.$loading.hide()
         })
+
+        // this.fullscreenLoading = true
+        // await this.axios.get("/api/blog/" + this.$route.params.id + "/").then(response => {
+        //   this.blog_data = response.data
+        //
+        //   this.fullscreenLoading = false
+        // })
 
       }
     },
@@ -127,8 +132,6 @@
         this.getBlogData()
     },
     mounted() {
-
-
       window.onresize = () => {
         return (() => {
           this.currentHeight = document.body.clientHeight - 220

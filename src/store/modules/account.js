@@ -1,9 +1,25 @@
-import {ACCOUNT} from '@/store/mutation-types'
-import load from '@/utils/loading'
+import {ACCOUNT} from '@/store/types'
+import loading from '@/utils/loading'
 // import { createVuexAlong } from 'vuex-along'
 import api from '@/api'
 
 const state = {
+
+    // [ACCOUNT.LOG_STATUS]: false,
+    // [ACCOUNT.LOG_IN_USERNAME]: '',
+    // [ACCOUNT.USER_INFO]: {},
+    // [ACCOUNT.CURRENT_USERNAME]: '',
+    // [ACCOUNT.DEFAULT_AVATAR]: require("@/assets/images/default-avatar.png"),
+    // [ACCOUNT.IS_USER_INFO_EDITING]: {
+    //     Archives: false,
+    //     Skill: false,
+    //     WorkInfo: false,
+    // },
+    // [ACCOUNT.EDIT_TYPE]: {
+    //     Archives: 'Archives',
+    //     Skill: 'Skill',
+    //     WorkInfo: 'WorkInfo'
+    // }
     logStatus: false,
     loginUsername: '',
     userInfo: {},
@@ -24,14 +40,14 @@ const state = {
 }
 
 const getters = {
-    getIsLogIn: (state) => {
+    [ACCOUNT.GET_IS_LOG_IN]: (state) => {
         return state.loginUsername === state.currentUsername
     }
 }
 
 const actions = {
 
-    setLogStatus({commit}) {
+    [ACCOUNT.GO_LOG_STATUS]({commit}) {
         api.account.logStatus().then((res) => {
             console.log(res)
             commit(ACCOUNT.SET_LOG_STATUS, res.data.status)
@@ -39,33 +55,39 @@ const actions = {
 
     },
 
-    logIn({commit, dispatch, state}, formData) {
+    [ACCOUNT.GO_LOG_IN]({commit, dispatch, state}, formData) {
         api.account.logIn(formData).then(res => {
             commit(ACCOUNT.SET_LOGIN_USERNAME, res.data.user.username)
-            dispatch('setLogStatus')
-            dispatch('userInfo', state.loginUsername)
+            dispatch(ACCOUNT.GO_LOG_STATUS)
+            dispatch(ACCOUNT.GO_USER_INFO, state.loginUsername)
         })
     },
 
-    logOut({commit, dispatch}) {
+    [ACCOUNT.GO_LOG_OUT]({commit, dispatch}) {
         api.account.logOut().then(() => {
-            dispatch('setLogStatus')
-            // this.logStatus({commit})
+            dispatch(ACCOUNT.GO_LOG_STATUS)
             commit(ACCOUNT.SET_LOG_STATUS, false)
         }).catch(error => {
             console.log(error)
         })
     },
 
-    userInfo({commit}, user_id) {
-        load.show()
+    [ACCOUNT.GO_USER_INFO]({commit}, user_id) {
+        loading.show()
         api.account.getUser(user_id).then((res) => {
             commit(ACCOUNT.SET_USER_INFO, res.data)
             commit(ACCOUNT.SET_CURRENT_USERNAME, res.data.username)
-            load.hide()
+            loading.hide()
+
+        })
+    },
+    [ACCOUNT.GO_UPDATE_USERINFO]({commit, state}, formData) {
+        api.account.updateUserInfo(state.loginUsername, formData).then((res)=>{
+            commit(ACCOUNT.SET_USER_INFO, res.data)
 
         })
     }
+
 }
 
 const mutations = {
@@ -86,28 +108,9 @@ const mutations = {
     [ACCOUNT.SET_USERINFO_EDIT_STATUS](state, key) {
         state.isUserInfoEditing[key] = !state.isUserInfoEditing[key]
 
-
-
     }
 
 }
-
-// const plugins = [
-//     createVuexAlong({
-//         // 设置保存的集合名字，避免同站点下的多项目数据冲突
-//         name: "vuex-along",
-//         local: {
-//             list: ["starus"],
-//             // 过滤模块 ma 数据， 将其他的存入 localStorage
-//             isFilter: true,
-//         },
-//         session: {
-//             // 保存模块 ma 中的 a1 到 sessionStorage
-//             list: ["starus.logStatus"],
-//         },
-//     }),
-// ]
-
 
 export default {
     namespaced: true,

@@ -1,5 +1,5 @@
 <template>
-  <div class="blog" v-loading.fullscreen.lock="fullscreenLoading">
+  <div class="blog">
     <sui-container align="left">
       <sui-grid class="ui padded horizontally vertically">
         <sui-grid-column :width="12">
@@ -89,35 +89,22 @@
     data() {
       return {
         blog: {},
-        defulat_news_img: require('../../assets/images/image.png'),
-        fullscreenLoading: false
       }
+    },
+    computed: {
+
     },
     methods: {},
 
     created() {
-
-      this.fullscreenLoading = true
-      this.axios.get("/api/blog/").then(response => {
-
-        this.blog = response.data
-        this.fullscreenLoading = false;
-
+      this.$loading.show()
+      this.$api.blog.getArticleList().then((res)=>{
+        this.blog = res.data
+        this.$loading.hide()
       })
+
+
     },
-    // mounted() {
-    //   this.fullscreenLoading = true
-    //   this.axios.get("/api/news/").then(response => {
-    //
-    //     this.blog = response.data
-    //     this.fullscreenLoading = false;
-    //
-    //   })
-    //
-    //
-    //
-    //
-    // },
     filters: {
 
       changeTime(val) {

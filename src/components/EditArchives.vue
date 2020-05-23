@@ -62,7 +62,7 @@
         </sui-form-fields>
 
         <sui-button @click="setEditStatus(editType.Archives)" floated="right">取消</sui-button>
-        <sui-button @click="submitArchives()" type="submit" color="green" floated="right">保存</sui-button>
+        <sui-button @click="submit()" type="submit" color="green" floated="right">保存</sui-button>
       </sui-form>
 
     </sui-card-content>
@@ -71,49 +71,53 @@
 </template>
 
 <script>
-  import {mapMutations, mapState} from 'vuex'
-  import {ACCOUNT} from "@/store/mutation-types"
+  import {mapMutations, mapState, mapActions} from 'vuex'
+  import {ACCOUNT} from "@/store/types"
+  // import account from "@/store/modules/account";
 
   export default {
     name: "EditArchives",
     data() {
       return {
         archives: {
-          introduction: this.$store.state.users.introduction,
-          nickname: this.$store.state.users.nickname,
-          website: this.$store.state.users.website,
-          name: this.$store.state.users.name,
-          education: this.$store.state.users.education,
-          birthday: this.$store.state.users.birthday,
-          sex: this.$store.state.users.sex
+          introduction: '',
+          nickname: '',
+          website: '',
+          name: '',
+          education: '',
+          birthday: '',
+          sex: ''
         }
       }
     },
     computed: {
-      ...mapState('account', ['editType'])
+      ...mapState('account', {
+        editType: ACCOUNT.EDIT_TYPE,
+        userInfo: ACCOUNT.USER_INFO
+      })
+    },
+    created() {
+      this.init()
     },
     methods: {
+      ...mapMutations('account', {setEditStatus: ACCOUNT.SET_USERINFO_EDIT_STATUS}),
+      ...mapActions('account', {
+        updateUserInfo: ACCOUNT.GO_UPDATE_USERINFO
+      }),
+      init() {
+        this.archives.introduction = this.userInfo.introduction
+        this.archives.nickname = this.userInfo.nickname
+        this.archives.website = this.userInfo.website
+        this.archives.name = this.userInfo.name
+        this.archives.education = this.userInfo.education
+        this.archives.birthday = this.userInfo.birthday
+        this.archives.sex = this.userInfo.sex
+      },
+      submit() {
 
-      ...mapMutations('account', {'setEditStatus': ACCOUNT.SET_USERINFO_EDIT_STATUS}),
+        this.updateUserInfo(this.archives)
+        this.setEditStatus(this.editType.Archives)
 
-      submitArchives() {
-
-        this.axios.defaults.headers.post['Content-Type'] = 'application/json';
-        this.axios.patch("/api/users/" + this.$store.state.users.username + "/",
-          this.archives).then(response => {
-          console.log(response)
-          console.log('suss')
-
-          this.axios.get("/api/users/me/").then(response => {
-            this.$store.commit("setUsers", response.data)
-            console.log(this.$store.state.users)
-          })
-
-          this.$store.commit('switchEditArchives')
-
-        }).catch(err => {
-          console.log(err)
-        })
       }
     }
   }

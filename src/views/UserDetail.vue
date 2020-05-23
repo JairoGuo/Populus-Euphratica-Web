@@ -1,24 +1,17 @@
 <template>
-  <div class="UserDetail" v-loading.fullscreen.lock="fullscreenLoading">
-
+  <div class="UserDetail">
     <sui-container>
-
-
       <sui-grid align="left">
+
         <sui-grid-column :width="2">
           <div>
-
             <sui-image
               :src="userInfo.avatar ? userInfo.avatar: defaultAvatar"
               size="medium"
               circular
             />
-            <UploadImage v-show="isLogin"></UploadImage>
-
-
+            <upload-avatar v-show="isLogin"></upload-avatar>
           </div>
-
-          <br>
           <div>
             <span v-for="i in userInfo.homepage" :key="i.homepage_type">
               <a :href="i.homepage_url" style="color: black"><sui-icon
@@ -26,9 +19,7 @@
                 :name="i.homepage_type.toLowerCase()"></sui-icon></a>
             </span>
           </div>
-
         </sui-grid-column>
-
         <sui-grid-column :width="4">
           <sui-header>
             {{userInfo.nickname ?
@@ -43,7 +34,6 @@
             </a>
           </div>
           <div>
-
 
             <sui-statistic size="mini">
               <sui-statistic-value>
@@ -81,7 +71,6 @@
           </div>
 
         </sui-grid-column>
-
         <sui-grid-column :width="6" floated="right">
 
           <sui-card class="ui fluid">
@@ -280,7 +269,6 @@
               </sui-grid-row>
             </sui-grid-column>
 
-
           </sui-grid>
         </sui-tab-pane>
         <sui-tab-pane class="tab-pane" title="我的博客">
@@ -316,19 +304,17 @@
   import EditArchives from "../components/EditArchives";
   import EditSkill from "../components/EditSkill";
   import EditWorkInfo from "../components/EditWorkInfo";
-  import UploadImage from "../components/UploadImage";
+  import UploadAvatar from "../components/users/UploadAvatar";
   import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
-  import {ACCOUNT} from "@/store/mutation-types"
+  import {ACCOUNT} from "@/store/types"
 
   export default {
 
     data() {
       return {
         isEditArchives: false,
-        fullscreenLoading: false,
         imageUrl: '',
         upload_img: require("../assets/images/upload.png"),
-
 
       }
     },
@@ -338,44 +324,31 @@
           'violet', 'purple', 'pink', 'brown', 'grey', 'black']
         return colorSet[Math.round(Math.random() * colorSet.length)]
       },
-      ...mapMutations('account', {'setEditStatus': ACCOUNT.SET_USERINFO_EDIT_STATUS}),
-
-
-      loadWait() {
-        this.fullscreenLoading = true;
-        setTimeout(() => {
-          this.fullscreenLoading = false;
-        }, 1000);
-      },
-        ...mapActions('account', {getUserInfo: 'userInfo'})
-
+      ...mapMutations('account', {setEditStatus: ACCOUNT.SET_USERINFO_EDIT_STATUS}),
+      ...mapActions('account', {getUserInfo: ACCOUNT.GO_USER_INFO})
     },
     computed: {
-      ...mapState('account', ['logStatus', 'userInfo', 'defaultAvatar', 'isUserInfoEditing', 'editType']),
+      ...mapState('account', {
+        logStatus: ACCOUNT.LOG_STATUS,
+        userInfo: ACCOUNT.USER_INFO,
+        defaultAvatar: ACCOUNT.DEFAULT_AVATAR,
+        isUserInfoEditing: ACCOUNT.IS_USER_INFO_EDITING,
+        editType: ACCOUNT.EDIT_TYPE
+      }),
       ...mapGetters('account', {
-        isLogin: 'getIsLogIn'
+        isLogin: ACCOUNT.GET_IS_LOG_IN
       })
-
     },
-    mounted() {
-      console.log(this.userInfo)
-  },
     watch: {
       $route() {
-        // this.fullscreenLoading = true
-
-        //
         this.getUserInfo(this.$route.params.username)
-
-        // this.loadWait()
       }
     },
-
     components: {
       EditWorkInfo,
       EditSkill,
       EditArchives,
-      UploadImage
+      UploadAvatar
     },
 
   };

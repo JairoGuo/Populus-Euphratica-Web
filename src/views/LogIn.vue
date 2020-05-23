@@ -15,6 +15,7 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import {ACCOUNT} from "@/store/types";
 
   export default {
     name: "LogIn",
@@ -32,42 +33,9 @@
     created() {},
     mounted() {},
     methods: {
-      ...mapActions('account', ['logIn']),
-      // submit() {
-      //
-      //   this.$api.account.logIn(this.postForm).then(res => {
-      //     console.log(res)
-      //     this.$api.account.logStatus().then(response => {
-      //       this.$store.commit("setloginStatus", response.data.status)
-      //     })
-      //     this.$api.account.getMe().then(response => {
-      //       console.log(response)
-      //       this.$store.commit("setUsers", response.data)
-      //       this.$store.commit("setLoginInfo", response.data.username)
-      //
-      //     })
-      //   })
-      //
-      //   // this.axios.post("/api/accounts/login/", this.postForm).then(response => {
-      //   //   console.log(response)
-      //   //
-      //   //   this.axios.get("/api/users/login_status/").then(response => {
-      //   //     this.$store.commit("setloginStatus", response.data.status)
-      //   //
-      //   //   })
-      //   //   this.axios.get("/api/users/me/").then(response => {
-      //   //     console.log(response)
-      //   //     this.$store.commit("setUsers", response.data)
-      //   //     this.$store.commit("setLoginInfo", response.data.username)
-      //   //
-      //   //     console.log(this.$store.state.users)
-      //   //   })
-      //   //
-      //   //   this.$router.push("/")
-      //   //
-      //   // });
-      // }
-
+      ...mapActions('account', {
+        logIn: ACCOUNT.GO_LOG_IN
+      }),
     },
     filter: {},
     watch: {},

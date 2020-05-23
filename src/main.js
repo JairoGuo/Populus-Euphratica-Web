@@ -16,7 +16,7 @@ import 'mavon-editor/dist/css/index.css'
 
 import api from '@/api'
 import store from "@/store"
-
+import loading from "@/utils/loading";
 Vue.use(JsCookies)
 
 Vue.use(SuiVue);
@@ -27,6 +27,7 @@ Vue.use(mavonEditor)
 // Vue.use(Timeago)
 
 Vue.prototype.$api = api
+Vue.prototype.$loading = loading
 Vue.config.productionTip = false
 
 new Vue({

@@ -16,58 +16,54 @@
         <label>行业</label>
         <input type="text" v-model="workinfos.industry" placeholder="行业"/>
       </sui-form-field>
-
       <sui-button @click="setEditStatus(editType.WorkInfo)" floated="right">取消</sui-button>
-      <sui-button @click="submitWorkInfo()" type="submit" color="green" floated="right">保存</sui-button>
+      <sui-button @click="submit()" type="submit" color="green" floated="right">保存</sui-button>
     </sui-form>
-
-
   </sui-card-content>
 
 </template>
 
 <script>
-  import {mapMutations, mapState} from "vuex";
-  import {ACCOUNT} from "@/store/mutation-types";
+  import {mapMutations, mapState, mapActions} from "vuex";
+  import {ACCOUNT} from "@/store/types";
 
   export default {
     name: "EditWorkInfo",
     data() {
       return {
         workinfos: {
-          company: this.$store.state.users.company,
-          position: this.$store.state.users.position,
-          industry: this.$store.state.users.industry
+          company: '',
+          position: '',
+          industry: ''
         }
       }
     },
-      computed: {
-      ...mapState('account', ['editType'])
+    computed: {
+      ...mapState('account', {
+        editType: ACCOUNT.EDIT_TYPE,
+        userInfo: ACCOUNT.USER_INFO
+
+      })
+    },
+    created() {
+      this.init()
     },
     methods: {
-      ...mapMutations('account', {'setEditStatus': ACCOUNT.SET_USERINFO_EDIT_STATUS}),
-
-
-      submitWorkInfo() {
-        this.axios.defaults.headers.post['Content-Type'] = 'application/json';
-        this.axios.patch("/api/users/" + this.$store.state.users.username + "/",
-          this.workinfos).then(response => {
-          console.log(response)
-          console.log('suss')
-
-          this.axios.get("/api/users/me/").then(response => {
-            this.$store.commit("setUsers", response.data)
-            console.log(this.$store.state.users)
-          })
-
-          this.$store.commit('switchWorkInfo')
-
-        }).catch(err => {
-          console.log(err)
-        })
+      ...mapMutations('account', {setEditStatus: ACCOUNT.SET_USERINFO_EDIT_STATUS}),
+      ...mapActions('account', {
+        updateUserInfo: ACCOUNT.GO_UPDATE_USERINFO
+      }),
+      init() {
+        this.workinfos.company = this.userInfo.company;
+        this.workinfos.position = this.userInfo.position
+        this.workinfos.industry = this.userInfo.industry
+      },
+      submit() {
+        this.updateUserInfo(this.workinfos)
+        this.setEditStatus(this.editType.WorkInfo)
       }
     }
-  }
+  };
 </script>
 
 <style scoped>

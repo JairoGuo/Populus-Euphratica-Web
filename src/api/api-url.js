@@ -8,6 +8,13 @@ const ACCOUNT = {
     LOGOUT: "accounts/logout/"
 }
 
+const BLOG = {
+    LIST: 'blog/',
+    READ: 'blog/'
+}
+
 export default {
-    ACCOUNT
+    ACCOUNT,
+    BLOG
+
 }

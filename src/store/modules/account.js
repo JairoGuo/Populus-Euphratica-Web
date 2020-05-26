@@ -1,5 +1,6 @@
 import {ACCOUNT} from '@/store/types'
 import loading from '@/utils/loading'
+import auth from '@/utils/auth'
 // import { createVuexAlong } from 'vuex-along'
 import api from '@/api'
 
@@ -57,6 +58,10 @@ const actions = {
 
     [ACCOUNT.GO_LOG_IN]({commit, dispatch, state}, formData) {
         api.account.logIn(formData).then(res => {
+            const user = res.data.user
+            const access_token = res.data.access_token
+            const refresh_token = res.data.refresh_token
+            auth.setUserToken(user, access_token, refresh_token)
             commit(ACCOUNT.SET_LOGIN_USERNAME, res.data.user.username)
             dispatch(ACCOUNT.GO_LOG_STATUS)
             dispatch(ACCOUNT.GO_USER_INFO, state.loginUsername)
@@ -65,6 +70,7 @@ const actions = {
 
     [ACCOUNT.GO_LOG_OUT]({commit, dispatch}) {
         api.account.logOut().then(() => {
+            auth.clearUserToken()
             dispatch(ACCOUNT.GO_LOG_STATUS)
             commit(ACCOUNT.SET_LOG_STATUS, false)
         }).catch(error => {

@@ -74,10 +74,15 @@
         <sui-grid-column :width="6" floated="right">
 
           <sui-card class="ui fluid">
+
             <sui-card-content>
+
               <sui-card-header>介绍</sui-card-header>
+
             </sui-card-content>
+
             <sui-card-content style="height: 150px; overflow: auto; resize: none; white-space:pre">
+
               {{userInfo.introduction}}
             </sui-card-content>
           </sui-card>
@@ -86,8 +91,8 @@
 
 
       <sui-divider></sui-divider>
-
-      <sui-tab :menu="{ vertical: true, fluid: true }" menu-position="left">
+      <sui-tab @change="handleChange" :active-index="activeIndex" :menu="{ vertical: true, fluid: true }"
+               menu-position="left">
         <sui-tab-pane class="tab-pane" title="个人主页">
           <sui-grid>
 
@@ -271,8 +276,73 @@
 
           </sui-grid>
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" title="我的博客">
-          我的博客
+        <sui-tab-pane class="tab-pane" align="left" title="我的博客">
+          <a is="sui-label" color="orange" ribbon="right">
+            Specs
+          </a>
+          <sui-item-group>
+            <sui-item v-for="i in articles" :key="i.article_id">
+
+              <sui-item-content>
+                <sui-item-header>
+                  <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                               style="color: #212121"
+                  >
+                    {{i.title}}
+                  </router-link>
+                </sui-item-header>
+
+                <sui-item-meta>
+                  <!--                  <span>{{i.user}}</span>-->
+                  <!--                  <sui-label size="mini" v-for="l in i.tags" :key="l.id" :content="l.name">{{l.name}}</sui-label>-->
+                </sui-item-meta>
+                <sui-item-description>
+                  <p>
+                    <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                                 style="color: #888"
+                    >
+                      {{i.abstract | wordLimit}}
+                    </router-link>
+                    <!--                    {{ i| setAbstract }}-->
+                  </p>
+                </sui-item-description>
+                <sui-item-extra class="ui end floated">
+
+
+                  <span>{{i.created_at | changeTime}}</span>
+                  <span class="ui right floated">阅读数：{{i.click_nums}}</span>
+                  <span class="ui  right floated">评论数：{{i.blog_comment | commentNum  }}</span>
+
+
+                </sui-item-extra>
+              </sui-item-content>
+              <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                           style="color: #888">
+                <sui-item-image class="cover-img"
+                                :style="{'background-image': 'url('+ i.cover +')',
+                                width: '180px',
+                                height: '120px',
+                                marginLeft: '20px'}"
+                                v-if="i.cover" src=""/>
+              </router-link>
+
+
+            </sui-item>
+          </sui-item-group>
+
+          <sui-menu secondary>
+            <sui-menu-item>
+              <sui-button content="上一页" :disabled="top" @click="changePage(false)" icon="left arrow" label-position="left"/>
+            </sui-menu-item>
+            <sui-menu-menu position="right">
+              <sui-menu-item>
+                <sui-button content="下一页" :disabled="end" @click="changePage(true)" icon="right arrow" label-position="right"/>
+
+              </sui-menu-item>
+            </sui-menu-menu>
+          </sui-menu>
+
+
         </sui-tab-pane>
         <sui-tab-pane class="tab-pane" title="我的问答">
           我的问答
@@ -301,12 +371,13 @@
 
 <script>
   // import $ from 'jquery'
-  import EditArchives from "../components/EditArchives";
-  import EditSkill from "../components/EditSkill";
-  import EditWorkInfo from "../components/EditWorkInfo";
+  import EditArchives from "../components/users/EditArchives";
+  import EditSkill from "../components/users/EditSkill";
+  import EditWorkInfo from "../components/users/EditWorkInfo";
   import UploadAvatar from "../components/users/UploadAvatar";
   import {mapState, mapGetters, mapMutations, mapActions} from "vuex";
   import {ACCOUNT} from "@/store/types"
+  import filters from "@/filters";
 
   export default {
 
@@ -315,8 +386,24 @@
         isEditArchives: false,
         imageUrl: '',
         upload_img: require("../assets/images/upload.png"),
+        activeIndex: null,
+        table: {
+          inside: null,
+          index: null,
+          name: null,
+        },
+        articles: [],
+        page: 1,
+        end: false,
+        top: true,
+        next: null,
+        previous: null
+
 
       }
+    },
+    created() {
+      this.getUserInfo(this.$route.params.username)
     },
     methods: {
       getColor: function () {
@@ -325,12 +412,59 @@
         return colorSet[Math.round(Math.random() * colorSet.length)]
       },
       ...mapMutations('account', {setEditStatus: ACCOUNT.SET_USERINFO_EDIT_STATUS}),
-      ...mapActions('account', {getUserInfo: ACCOUNT.GO_USER_INFO})
+      ...mapActions('account', {getUserInfo: ACCOUNT.GO_USER_INFO}),
+      activatePane(index) {
+        this.table.index = +index;
+        this.activeIndex = +index;
+      },
+      handleChange(e, activePane, index) {
+        this.table.inside = !!e;
+        this.table.index = +index;
+        this.table.title = activePane.title;
+
+        switch (index) {
+          case 1:
+            this.page = 1
+            this.getArticles()
+            break
+
+        }
+
+      },
+
+      getArticles() {
+        this.$loading.show();
+        this.$api.blog.getArticleParamList({username: this.username, page: this.page}).then(res => {
+          this.articles = res.data.results
+          this.top = res.data.previous === null
+          this.end = res.data.next === null
+          console.log(this.top, this.end)
+          this.$loading.hide()
+        })
+      },
+
+      changePage(flag) {
+        if (flag) {
+          this.page += 1
+          this.getArticles()
+
+
+
+        } else {
+          this.page -= 1
+          this.getArticles()
+
+        }
+      }
+    },
+    mounted() {
+      this.activatePane(0);
     },
     computed: {
       ...mapState('account', {
         logStatus: ACCOUNT.LOG_STATUS,
         userInfo: ACCOUNT.USER_INFO,
+        username: ACCOUNT.CURRENT_USERNAME,
         defaultAvatar: ACCOUNT.DEFAULT_AVATAR,
         isUserInfoEditing: ACCOUNT.IS_USER_INFO_EDITING,
         editType: ACCOUNT.EDIT_TYPE
@@ -338,6 +472,9 @@
       ...mapGetters('account', {
         isLogin: ACCOUNT.GET_IS_LOG_IN
       })
+    },
+    filters: {
+      ...filters
     },
     watch: {
       $route() {
@@ -381,6 +518,17 @@
     width: 178px;
     height: 178px;
     display: block;
+  }
+
+  .cover-img {
+    width: 180px;
+    height: 120px;
+    border-radius: 4px;
+    float: right;
+    margin-left: 30px;
+    margin-top: 10px;
+    background-size: cover;
+    background-position: center
   }
 
 </style>

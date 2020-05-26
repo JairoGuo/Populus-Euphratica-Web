@@ -14,30 +14,30 @@ class MTMessage {
     Message(JSON.parse(JSON.stringify(this.config)))
   }
 
-  success(message = "恭喜！操作成功！") {
+  success(message = "success") {
     this.config.type = "success"
     this.config.message = message
     this.show()
   }
 
-  info(message = "") {
+  info(message = "info") {
     this.config.type = 'info'
     this.config.message = message
     this.show()
   }
 
-  warning(message = "") {
+  warning(message = "warning") {
     this.config.type = 'warning'
     this.config.message = message
     this.show()
   }
 
-  error(message = "") {
+  error(message = "error") {
     this.config.type = 'error'
     this.config.message = message
     this.show()
   }
 }
 
-const message = new MTMessage()
-export default message
+
+export default new MTMessage()

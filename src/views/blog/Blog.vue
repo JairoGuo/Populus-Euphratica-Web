@@ -1,11 +1,29 @@
 <template>
   <div class="blog">
-    <sui-container align="left">
+    <div align="left" style="margin-left: 150px;margin-right: 150px">
       <sui-grid class="ui padded horizontally vertically">
-        <sui-grid-column :width="12">
-          <sui-item-group divided>
-            <sui-item v-for="i in blog" :key="i.article_id">
+        <sui-grid-column :width="3">
+          <div class="ui secondary vertical menu fluid ">
+            <a class="active item green ">为你推荐 </a>
+            <a class="item">热门内容 </a>
+            <a class="item">最新内容 </a>
+            <div class="ui horizontal divider">技术频道</div>
+            <a class="item">前端 </a>
+            <a class="item">后端 </a>
+            <a class="item">Android </a>
+            <a class="item">IOS </a>
+            <a class="item">AI </a>
+            <a class="item">开源 </a>
+            <a class="item">工具 </a>
 
+          </div>
+        </sui-grid-column>
+
+        <sui-grid-column :width="9">
+          <sui-header>为你推荐</sui-header>
+          <sui-divider></sui-divider>
+          <sui-item-group>
+            <sui-item v-for="i in blog" :key="i.article_id">
 
               <sui-item-content>
                 <sui-item-header>
@@ -52,9 +70,12 @@
 
 
             </sui-item>
-
-
           </sui-item-group>
+          <infinite-loading v-if="blog" @infinite="infiniteHandler">
+            <div slot="spinner">小弟拼命加载中...</div>
+            <div slot="no-more">已加载完毕!</div>
+            <div slot="no-results">暂无数据:(</div>
+          </infinite-loading>
 
         </sui-grid-column>
         <sui-grid-column :width="4">
@@ -62,67 +83,137 @@
           <sui-card-group>
             <sui-card>
               <sui-card-content>
-                <sui-card-header>Elliot Fu</sui-card-header>
-                <sui-card-meta>Friend</sui-card-meta>
-                <sui-card-description
-                >Elliot Fu is a film-maker from New York.
-                </sui-card-description
-                >
+                <sui-card-header>推荐文章</sui-card-header>
+                <sui-divider></sui-divider>
+                <sui-card-description>
+                  <sui-item-group>
+                    <sui-item>
+
+                      <sui-item-content vertical-align="middle">Content A</sui-item-content>
+                    </sui-item>
+                    <sui-item>
+
+                      <sui-item-content vertical-align="middle">Content B</sui-item-content>
+                    </sui-item>
+                    <sui-item>
+
+                      <sui-item-content vertical-align="middle">Content C</sui-item-content>
+                    </sui-item>
+                  </sui-item-group>
+
+                </sui-card-description>
               </sui-card-content>
             </sui-card>
+
+            <sui-card>
+              <sui-card-content>
+                <el-carousel :interval="4000" type="card" height="200px">
+                  <el-carousel-item v-for="item in 6" :key="item">
+                    <h3 class="medium">{{ item }}</h3>
+                  </el-carousel-item>
+                </el-carousel>
+              </sui-card-content>
+
+            </sui-card>
+
+            <sui-card>
+              <sui-card-content>
+                <sui-image :src = "require ('@/assets/images/2b8ce076df8b026.jpg')">
+
+                </sui-image>
+              </sui-card-content>
+            </sui-card>
+
 
           </sui-card-group>
 
         </sui-grid-column>
       </sui-grid>
-    </sui-container>
-
+    </div>
+    <el-backtop></el-backtop>
   </div>
 </template>
 
 <script>
-  var timeago = require('timeago.js');
+
+  import filters from "@/filters";
+  import InfiniteLoading from 'vue-infinite-loading'
 
   export default {
     name: 'Blog',
+    components: {InfiniteLoading},
 
     data() {
       return {
-        blog: {},
+        blog: [],
+        next: '',
+        previous: '',
+        page: 1,
+        end: true
+
       }
     },
-    computed: {
+    computed: {},
+    methods: {
 
+      async infiniteHandler($state) {
+
+        this.$api.blog.getArticleParamList({
+          page: this.page
+        }).then((res) => {
+          if (this.end) {
+            this.page += 1;
+            this.blog.push(...res.data.results);
+            this.end = res.data.next !== null
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
+          this.end = res.data.next !== null
+          if (this.end === false) {
+            $state.complete();
+          }
+
+        })
+
+      },
     },
-    methods: {},
 
-    created() {
-      this.$loading.show()
-      this.$api.blog.getArticleList().then((res)=>{
-        this.blog = res.data
-        this.$loading.hide()
-      })
+    async created() {
+
+      // this.$loading.show()
+      // await this.$api.blog.getArticleList().then((res)=>{
+      //   this.blog = res.data.results
+      //   this.next = res.data.next
+      //   this.previous = res.data.previous
+      //   console.log("create:", res.data)
+      //   console.log("create:", res.data.next)
+      //   console.log("create:", res.data.results)
+      //   this.$loading.hide()
+      // })
 
 
     },
     filters: {
 
-      changeTime(val) {
-        let time = new Date(val); //先将接收到的json格式的日期数据转换成可用的js对象日期
-        return timeago.format(time, 'zh_CN'); //转换成类似于几天前的格式
-      },
-      wordLimit(value, num) {
-        const nums = num || '100';
-        if (!value) return '';
-        if (value.length > nums) {
-          return value.slice(0, nums) + '...';
-        }
-        return value;
+      ...filters,
 
-      },
-      commentNum(value) {
-        return value.length
-      },
+      // changeTime(val) {
+      //   let time = new Date(val); //先将接收到的json格式的日期数据转换成可用的js对象日期
+      //   return timeago.format(time, 'zh_CN'); //转换成类似于几天前的格式
+      // },
+      // wordLimit(value, num) {
+      //   const nums = num || '100';
+      //   if (!value) return '';
+      //   if (value.length > nums) {
+      //     return value.slice(0, nums) + '...';
+      //   }
+      //   return value;
+      //
+      // },
+      // commentNum(value) {
+      //   return value.length
+      // },
       // setAbstract(value) {
       //   if (value.abstract) {
       //     return value.abstract.substring(0, 100) + "...";
@@ -147,4 +238,22 @@
     background-size: cover;
     background-position: center
   }
+
+
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+
 </style>

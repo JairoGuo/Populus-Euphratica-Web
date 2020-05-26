@@ -7,7 +7,7 @@
       <sui-form-field>
         <input v-model="postForm.password" placeholder="密码"/>
       </sui-form-field>
-      <sui-button type="submit" @click="logIn(postForm)">登录</sui-button>
+      <sui-button type="submit" @click="login">登录</sui-button>
       <a href="#"> 忘记密码</a>
     </sui-form>
   </sui-container>
@@ -36,6 +36,10 @@
       ...mapActions('account', {
         logIn: ACCOUNT.GO_LOG_IN
       }),
+      login() {
+        this.logIn(this.postForm)
+        this.$router.push('/')
+    }
     },
     filter: {},
     watch: {},

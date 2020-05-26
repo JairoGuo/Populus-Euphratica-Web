@@ -5,7 +5,7 @@
     </div>
 
     <router-view style="padding-top: 40px"/>
-    <div v-loading.fullscreen.lock="fullscreenLoading"></div>
+    <div></div>
   </div>
 </template>
 
@@ -19,9 +19,7 @@
       NavBar
     },
     data() {
-      return {
-        fullscreenLoading: false,
-      }
+      return {}
     },
 
   };

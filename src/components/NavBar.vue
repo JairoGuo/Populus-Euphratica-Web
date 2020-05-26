@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="!this.isEditor" class="ui inverted segment menu fixed top">
-      <sui-menu pointing secondary inverted fluid>
+
+    <nav-bar-base v-if="!this.isEditor">
         <router-link
           is="sui-menu-item"
           v-for="(value, name) in route_items"
@@ -10,8 +10,11 @@
           :content="name"
           @click.native="select(name)"
           :to="value"
-
         />
+        <sui-menu-menu>
+          <sui-button circular icon="search" />
+        </sui-menu-menu>
+
         <sui-menu-menu position="right" v-if="!logStatus" key="logout">
           <router-link
             is="sui-menu-item"
@@ -85,7 +88,11 @@
               <sui-divider></sui-divider>
               <router-link is="sui-dropdown-item" to="/users/me">
                 <sui-icon name="user"/>
-                个人中心
+                个人主页
+              </router-link>
+              <router-link is="sui-dropdown-item" to="/users/me">
+                <sui-icon name="user"/>
+                账号中心
               </router-link>
               <sui-dropdown-item>
                 <sui-icon name="help"/>
@@ -99,8 +106,7 @@
             </sui-dropdown-menu>
           </sui-dropdown>
         </sui-menu-menu>
-      </sui-menu>
-    </div>
+</nav-bar-base>
     <!--      <EditorNavBar v-else/>-->
 
   </div>
@@ -109,10 +115,12 @@
 <script>
   // import EditorNavBar from "./EditorNavBar";
   import {mapActions, mapState} from 'vuex'
-
+  import NavBarBase from '@/components/NavBarBase'
   export default {
     name: "NavBar",
-    components: {},
+    components: {
+        NavBarBase
+    },
     props: {},
     data() {
       return {

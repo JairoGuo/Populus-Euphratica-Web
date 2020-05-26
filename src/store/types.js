@@ -26,6 +26,12 @@ const ACCOUNT = {
     GET_IS_LOG_IN: 'getIsLogIn'
 }
 
+const BLOG ={
+
+
+}
+
 export {
-    ACCOUNT
+    ACCOUNT,
+    BLOG
 }

@@ -1,5 +1,6 @@
 const path =  require('path');
 const resolve = (dir) => path.join(__dirname, dir);
+const webpack = require('webpack')
 
 module.exports = {
     devServer: {
@@ -20,20 +21,25 @@ module.exports = {
         }
     },
 
-    // chainWebpack: (config) => {
-    //     // 添加别名
-    //     config.resolve.alias
-    //       .set('@', resolve('src'))
-    //       .set('assets', resolve('src/assets'))
-    //       .set('components', resolve('src/components'))
-    // },
-
     configureWebpack: {
         resolve: {
             alias: {
                 '@': resolve('src')
             }
-        }
+        },
+        // plugins: [
+        //
+        //     new webpack.ProvidePlugin({
+        //
+        //         $:"jquery",
+        //
+        //         jQuery:"jquery",
+        //
+        //         "windows.jQuery":"jquery"
+        //
+        //     })
+        //
+        // ]
     },
 
 }

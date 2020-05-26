@@ -5,16 +5,23 @@ const ACCOUNT = {
     STATUS: 'users/login_status/',
     ME: 'users/me/',
     LOGIN: "accounts/login/",
-    LOGOUT: "accounts/logout/"
+    LOGOUT: "accounts/logout/",
+    USER: 'accounts/user/'
 }
 
 const BLOG = {
-    LIST: 'blog/',
-    READ: 'blog/'
+    LIST: 'articles/',
+    READ: 'articles/',
+    CREATE: 'articles/'
+}
+
+const UPLOAD = {
+    UPLOAD: 'upload-image/'
 }
 
 export default {
     ACCOUNT,
-    BLOG
+    BLOG,
+    UPLOAD
 
 }

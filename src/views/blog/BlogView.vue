@@ -10,12 +10,11 @@
               <sui-header is="h1">{{blog_data.title}}</sui-header>
               <sui-header-content style="margin: 5px">
 
-            <span v-if="blog_data.blog_tags !== undefined  && blog_data.blog_tags.length!==0"
+            <span v-if="blog_data.tags !== undefined  && blog_data.tags.length!==0"
                   style="margin-right: 10px">
                           <sui-label size="mini"
-                                     v-for="l in blog_data.blog_tags"
-                                     :key="l.id"
-                                     :content="l.name">{{l.name}}</sui-label>
+                                     v-for="tag in blog_data.tags"
+                                     :key="tag">{{tag}}</sui-label>
 
             </span>
                 <span style="margin-right: 10px">发布于：{{blog_data.created_at | changeTime}}</span>
@@ -114,13 +113,6 @@
           this.blog_data = res.data
           this.$loading.hide()
         })
-
-        // this.fullscreenLoading = true
-        // await this.axios.get("/api/blog/" + this.$route.params.id + "/").then(response => {
-        //   this.blog_data = response.data
-        //
-        //   this.fullscreenLoading = false
-        // })
 
       }
     },

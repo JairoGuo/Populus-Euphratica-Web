@@ -1,13 +1,16 @@
 <template>
   <div>
     <!--NavBar-->
-    <editor-nav-bar title="写文章" v-show="show">
+    <editor-nav-bar :title="$t('nav.writeAnArticle')" v-show="show">
+      <sui-menu-item>
+        <div is="sui-button-group">
+          <sui-button>{{$t('nav.saveDraft')}}</sui-button>
+          <sui-button-or/>
+          <sui-button positive @click.native="toggle">{{$t('nav.publish')}}</sui-button>
+        </div>
+      </sui-menu-item>
 
-      <div is="sui-button-group">
-        <sui-button>保存草稿</sui-button>
-        <sui-button-or/>
-        <sui-button positive @click.native="toggle">发表</sui-button>
-      </div>
+
 
       <!--      <article-post-modal :open-status="open"></article-post-modal>-->
 

@@ -8,7 +8,7 @@
           icon="chevron left"
           color="red"
           class="circular ui"
-          content="返回"
+          :content="$t('nav.back')"
           to="/"
         />
       </sui-menu-item>

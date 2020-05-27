@@ -4,23 +4,23 @@
       <sui-grid class="ui padded horizontally vertically">
         <sui-grid-column :width="3">
           <div class="ui secondary vertical menu fluid ">
-            <a class="active item green ">为你推荐 </a>
-            <a class="item">热门内容 </a>
-            <a class="item">最新内容 </a>
-            <div class="ui horizontal divider">技术频道</div>
-            <a class="item">前端 </a>
-            <a class="item">后端 </a>
-            <a class="item">Android </a>
-            <a class="item">IOS </a>
-            <a class="item">AI </a>
-            <a class="item">开源 </a>
-            <a class="item">工具 </a>
+            <a class="active item green ">{{$t('blog.recommendedToYou')}}</a>
+            <a class="item">{{$t('blog.popularContent')}}</a>
+            <a class="item">{{$t('blog.latestContent')}}</a>
+            <div class="ui horizontal divider">{{$t('blog.technologyChannel')}}</div>
+            <a class="item">{{$t('blog.frontEnd')}}</a>
+            <a class="item">{{$t('blog.backEnd')}}</a>
+            <a class="item">Android</a>
+            <a class="item">IOS</a>
+            <a class="item">AI</a>
+            <a class="item">{{$t('blog.openSource')}}</a>
+            <a class="item">{{$t('blog.tool')}}</a>
 
           </div>
         </sui-grid-column>
 
         <sui-grid-column :width="9">
-          <sui-header>为你推荐</sui-header>
+          <sui-header>{{$t('blog.recommendedToYou')}}</sui-header>
           <sui-divider></sui-divider>
           <sui-item-group>
             <sui-item v-for="i in blog" :key="i.article_id">

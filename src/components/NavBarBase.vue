@@ -1,5 +1,5 @@
 <template>
-  <div  class="ui  segment menu fixed top" style="background-color: #fafafa">
+  <div class="ui menu fixed top" style="background-color: #fafafa; padding-left: 10px">
     <sui-menu secondary fluid>
 
       <slot />

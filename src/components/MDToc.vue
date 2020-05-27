@@ -274,7 +274,7 @@
             '      title: \'JavaScript-Umgebung\'\n' +
             '    }\n' +
             '  ],\n' +
-            '  url: \'/en-US/docs/Tools/Scratchpad\'\n' +
+            '  url: \'/enUs-US/docs/Tools/Scratchpad\'\n' +
             '};\n' +
             '\n' +
             'let {\n' +

@@ -116,13 +116,7 @@
 
             </sui-card>
 
-            <sui-card>
-              <sui-card-content>
-                <sui-image :src = "require ('@/assets/images/2b8ce076df8b026.jpg')">
 
-                </sui-image>
-              </sui-card-content>
-            </sui-card>
 
 
           </sui-card-group>

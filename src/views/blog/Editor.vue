@@ -4,15 +4,11 @@
     <editor-nav-bar :title="$t('nav.writeAnArticle')" v-show="show">
       <sui-menu-item>
         <div is="sui-button-group">
-          <sui-button>{{$t('nav.saveDraft')}}</sui-button>
+          <sui-button @click.native="createDraftArticcle">{{$t('nav.saveDraft')}}</sui-button>
           <sui-button-or/>
           <sui-button positive @click.native="toggle">{{$t('nav.publish')}}</sui-button>
         </div>
       </sui-menu-item>
-
-
-
-      <!--      <article-post-modal :open-status="open"></article-post-modal>-->
 
       <sui-modal v-model="open">
         <sui-modal-header>发表</sui-modal-header>
@@ -27,9 +23,9 @@
                   <sui-dropdown
                     placeholder="分类"
                     selection
-                    :options="skills"
-                    v-model="article_data.category"
-                  />
+                    :options="categorys"
+                    v-model="article_data.category"/>
+
                 </sui-form-field>
                 <!--文章标签-->
                 <sui-form-field>
@@ -92,7 +88,7 @@
           <sui-button positive @click.native="createArticcle()">
             发表
           </sui-button>
-          <sui-button  @click.native="toggle">
+          <sui-button @click.native="toggle">
             取消
           </sui-button>
         </sui-modal-actions>
@@ -124,7 +120,8 @@
 
 <script>
   import EditorNavBar from "../../components/EditorNavBar";
-  // import ArticlePostModal from "@/components/blog/ArticlePostModal";
+  import {ACCOUNT} from "@/store/types";
+  import {mapState} from "vuex"
 
   export default {
     name: "Editor",
@@ -133,7 +130,7 @@
         article_data: {
           title: "",
           content: "",
-          category: '',
+          category: null,
           abstract: null,
           cover: "",
           type: "Original",
@@ -166,6 +163,7 @@
           {key: 'ui', text: 'UI Design', value: 'ui'},
           {key: 'ux', text: 'User Experience', value: 'ux'},
         ],
+        categorys: [],
         isShowOriginalUrl: false
       }
     },
@@ -184,18 +182,15 @@
           formdata.append(_img, this.img_file[_img]);
         }
 
-        await this.$api.upload.uploadImage(formdata).then((res)=>{
+        await this.$api.upload.uploadImage(formdata).then((res) => {
           if (res.data.imgs.length !== 0) {
             this.article_data.cover = res.data.imgs[0][1]
-
           }
           for (var img in res.data.imgs) {
-
             this.$refs.md.$img2Url(res.data.imgs[img][0], res.data.imgs[img][1]);
             // this.$refs.md.$img2Url(img[0], img[1]);
           }
         })
-
 
       },
 
@@ -207,57 +202,115 @@
       },
       async createArticcle() {
 
-        await this.uploadimg();
-        this.article_data.status = 'P'
-        this.$loading.show()
-        await this.$api.blog.postArticle(this.article_data).then(()=>{
-          this.$loading.hide()
-          this.$router.push("/")
-          this.$message.success('发表文章成功')
+
+        if (this.$route.params.article) {
+          this.$loading.show()
+          this.article_data.status = 'P'
+          await this.$api.blog.updateArticle(this.$route.params.article, this.article_data).then(() => {
+            this.$loading.hide()
+            this.$router.push("/manage/articles-manage")
+            this.$message.success('文章被编辑并重新发表成功')
+
+          }).catch(() => {
+            this.$loading.hide()
+            this.$message.error('文章被编辑并重新发表失败')
+
+          })
 
 
-        }).catch(() => {
+        } else {
+          await this.uploadimg();
+          this.article_data.status = 'P'
+          this.$loading.show()
+          await this.$api.blog.postArticle(this.article_data).then(() => {
+            this.$loading.hide()
+            this.$router.push("/")
+            this.$message.success('发表文章成功')
+
+
+          }).catch(() => {
             this.$message.error('发表文章失败')
             this.$loading.hide()
 
-        })
+          })
+        }
 
-          // await this.axios.post('api/blog/', this.article_data).then((res) => {
+
+        // await this.axios.post('api/blog/', this.article_data).then((res) => {
         //   console.log(res)
         // })
         this.toggle()
       },
       async createDraftArticcle() {
 
-        await this.uploadimg();
-        this.article_data.status = 'D'
-        this.$loading.show()
-        await this.$api.blog.postArticle({
-          title: this.article_data.title,
-          content: this.article_data.content,
-          article: this.article_data.article
-        }).then(()=>{
-          this.$loading.hide()
-          this.$router.push("/")
-          this.$message.success('保存草稿成功')
 
+        if (this.$route.params.article) {
+          this.$loading.show()
+          this.article_data.status = 'D'
+          await this.$api.blog.updateArticle(this.$route.params.article, this.article_data).then(() => {
+            this.$loading.hide()
+            this.$router.push("/manage/articles-manage")
+            this.$message.success('文章被编辑并保存到草稿成功')
 
-        }).catch(() => {
+          }).catch(() => {
+
+            this.$loading.hide()
+            this.$message.error('文章被编辑并保存到草稿失败')
+
+          })
+
+        } else {
+          await this.uploadimg();
+          this.article_data.status = 'D'
+          this.$loading.show()
+          await this.$api.blog.postArticle({
+            title: this.article_data.title,
+            content: this.article_data.content,
+            article: this.article_data.article,
+            abstract: null
+          }).then(() => {
+            this.$loading.hide()
+            this.$router.push("/")
+            this.$message.success('保存草稿成功')
+
+          }).catch(() => {
+            this.$loading.hide()
             this.$message.error('保存草稿失败')
 
-        })
+          })
+        }
 
-        this.toggle()
       },
 
 
-      switchOriginalUrlStatus(status){
+      switchOriginalUrlStatus(status) {
         this.isShowOriginalUrl = status
       }
 
     },
-    mounted() {
+    computed: {
+      ...mapState('account', {userInfo: ACCOUNT.USER_INFO,})
+    },
+    created() {
+      if (this.$route.params.article) {
+        this.$api.blog.getArticle(this.$route.params.article).then((res) => {
+          this.article_data = res.data
+          delete this.article_data['username']
+          delete this.article_data['avatar']
+          delete this.article_data['blog_comment']
+          delete this.article_data['blog_like']
 
+        })
+      }
+      this.$api.blog.getCategory().then((res)=> {
+        const category = res.data
+        for (let i in category) {
+          this.categorys.push({text: category[i].name, value: category[i].id})
+        }
+      })
+
+    },
+    mounted() {
       window.onresize = () => {
         return (() => {
           this.currentHeight = document.body.clientHeight - 180
@@ -269,7 +322,7 @@
       EditorNavBar,
       // ArticlePostModal
     }
-  }
+  };
 </script>
 
 

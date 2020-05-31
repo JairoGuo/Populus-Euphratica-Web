@@ -96,7 +96,6 @@
       }
     },
     created() {
-      console.log(this.openStatus)
   }
 
   }

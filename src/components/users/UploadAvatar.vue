@@ -55,7 +55,7 @@
     },
     methods: {
       handleRemove(file, fileList) {
-        console.log(file, fileList);
+        console.log(file, fileList)
         this.hideUpload = false
       },
       handlePictureCardPreview(file) {
@@ -81,7 +81,7 @@
       },
       imgChange(file, fileList) {
         this.imageUrl = file.raw
-        console.log(file)
+
         this.hideUpload = fileList.length >= this.limitNum;
 
       },

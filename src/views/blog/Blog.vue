@@ -1,5 +1,6 @@
 <template>
   <div class="blog">
+
     <div align="left" style="margin-left: 150px;margin-right: 150px">
       <sui-grid class="ui padded horizontally vertically">
         <sui-grid-column :width="3">
@@ -27,7 +28,7 @@
 
               <sui-item-content>
                 <sui-item-header>
-                  <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                  <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
                                style="color: #212121"
                   >
                     {{i.title}}
@@ -40,7 +41,7 @@
                 </sui-item-meta>
                 <sui-item-description>
                   <p>
-                    <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                    <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
                                  style="color: #888"
                     >
                       {{i.abstract | wordLimit}}
@@ -50,15 +51,23 @@
                 </sui-item-description>
                 <sui-item-extra class="ui end floated">
 
+                  <span>
+                    <router-link
+                      style="color: #475669"
+                      :to="{name: 'UserDetail', params: { username: i.username }}">
+
+                      <sui-image size="mini" circular :src="i.avatar ? i.avatar: defaultAvatar" avatar />
+                      {{i.username}}
+
+                  </router-link>
+                  </span>
 
                   <span>{{i.created_at | changeTime}}</span>
                   <span class="ui right floated">阅读数：{{i.click_nums}}</span>
                   <span class="ui  right floated">评论数：{{i.blog_comment | commentNum  }}</span>
-
-
                 </sui-item-extra>
               </sui-item-content>
-              <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+              <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
                            style="color: #888">
                 <sui-item-image class="cover-img"
                                 :style="{'background-image': 'url('+ i.cover +')',
@@ -73,7 +82,7 @@
           </sui-item-group>
           <infinite-loading v-if="blog" @infinite="infiniteHandler">
             <div slot="spinner">小弟拼命加载中...</div>
-            <div slot="no-more">已加载完毕!</div>
+            <div slot="no-more">没有啦！别翻了😘</div>
             <div slot="no-results">暂无数据:(</div>
           </infinite-loading>
 
@@ -117,8 +126,6 @@
             </sui-card>
 
 
-
-
           </sui-card-group>
 
         </sui-grid-column>
@@ -132,6 +139,8 @@
 
   import filters from "@/filters";
   import InfiniteLoading from 'vue-infinite-loading'
+  import {ACCOUNT} from "@/store/types";
+  import {mapState} from "vuex"
 
   export default {
     name: 'Blog',
@@ -147,13 +156,16 @@
 
       }
     },
-    computed: {},
+    computed: {
+      ...mapState('account', {defaultAvatar: ACCOUNT.DEFAULT_AVATAR,})
+    },
     methods: {
 
       async infiniteHandler($state) {
 
         this.$api.blog.getArticleParamList({
-          page: this.page
+          page: this.page,
+          status: 'P'
         }).then((res) => {
           if (this.end) {
             this.page += 1;

@@ -50,7 +50,7 @@ const actions = {
 
     [ACCOUNT.GO_LOG_STATUS]({commit}) {
         api.account.logStatus().then((res) => {
-            console.log(res)
+
             commit(ACCOUNT.SET_LOG_STATUS, res.data.status)
         })
 
@@ -83,6 +83,7 @@ const actions = {
         api.account.getUser(user_id).then((res) => {
             commit(ACCOUNT.SET_USER_INFO, res.data)
             commit(ACCOUNT.SET_CURRENT_USERNAME, res.data.username)
+            document.title = res.data.username
             loading.hide()
 
         })
@@ -100,7 +101,7 @@ const mutations = {
     [ACCOUNT.SET_LOG_STATUS](state, status) {
 
         state.logStatus = status
-        console.log(state.logStatus)
+
     },
     [ACCOUNT.SET_LOGIN_USERNAME](state, username) {
         state.loginUsername = username

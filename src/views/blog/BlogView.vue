@@ -6,18 +6,30 @@
 
         <sui-grid-column :width="12">
           <sui-grid-row style="background-color: white; border-radius: .28571429rem; padding: 15px">
-            <div ref="headerinfo" id="hhh">
-              <sui-header is="h1">{{blog_data.title}}</sui-header>
+            <div ref="headerinfo" id="hhh" style="margin: 10px">
+              <sui-header is="h1">{{articles.title}}</sui-header>
               <sui-header-content style="margin: 5px">
+                <div style="margin-top: 10px; margin-bottom: 10px">
+                  <router-link
+                    :to="{name: 'UserDetail', params: { username: articles.username }}">
+                    <sui-header size="small" align="">
+                      <sui-image :src="articles.avatar ? articles.avatar: defaultAvatar" avatar/>
+                      <sui-header-content>
+                        {{articles.username}}
+                      </sui-header-content>
 
-            <span v-if="blog_data.tags !== undefined  && blog_data.tags.length!==0"
-                  style="margin-right: 10px">
+                    </sui-header>
+                  </router-link>
+                </div>
+
+                <span v-if="articles.tags !== undefined  && articles.tags.length!==0"
+                      style="margin-right: 10px">
                           <sui-label size="mini"
-                                     v-for="tag in blog_data.tags"
+                                     v-for="tag in articles.tags"
                                      :key="tag">{{tag}}</sui-label>
 
             </span>
-                <span style="margin-right: 10px">发布于：{{blog_data.created_at | changeTime}}</span>
+                <span style="margin-right: 10px">发布于：{{articles.created_at | changeTime}}</span>
                 <span>{{ readTime }}</span>
               </sui-header-content>
             </div>
@@ -25,7 +37,7 @@
 
             <mavon-editor
 
-              v-model="blog_data.content"
+              v-model="articles.content"
               :subfield="false"
               :boxShadow="false"
               defaultOpen="preview"
@@ -88,17 +100,21 @@
 </template>
 
 <script>
+  import {ACCOUNT} from "@/store/types"
+  import {mapState} from "vuex"
   var timeago = require('timeago.js');
 
   export default {
     name: "BlogView",
     data() {
       return {
-        blog_data: {
-          content: ''
+        articles: {
+          content: '',
+          avatar: ''
         },
         md_toc: '',
-        currentHeight: document.body.clientHeight - 220,
+        currentHeight: document.body.clientHeight - 250,
+        userInfo: {},
 
       }
 
@@ -110,20 +126,24 @@
 
         this.$loading.show()
         this.$api.blog.getArticle(this.$route.params.id).then(res => {
-          this.blog_data = res.data
+          this.articles = res.data
+          document.title = res.data.title
+          // this.$api.getUser(res.data)
           this.$loading.hide()
         })
 
       }
     },
 
-     created() {
-      this.$nextTick(() => {
-      });
+    created() {
+      // this.$nextTick(() => {
+      // });
 
-        this.getBlogData()
+      this.getBlogData()
+
     },
     mounted() {
+
       window.onresize = () => {
         return (() => {
           this.currentHeight = document.body.clientHeight - 220
@@ -138,9 +158,10 @@
       },
     },
     computed: {
+      ...mapState('account', {defaultAvatar: ACCOUNT.DEFAULT_AVATAR,}),
       readTime() {
 
-        let $_time = parseInt(this.blog_data.content.length / 300)
+        let $_time = parseInt(this.articles.content.length / 300)
         if ($_time >= 1) {
           return "预计阅读 " + $_time + " 分钟"
         } else {

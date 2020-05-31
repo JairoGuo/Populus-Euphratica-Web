@@ -4,8 +4,6 @@ import URLS from "@/api/api-url";
 class Account {
 
     logIn(data) {
-        console.log(data)
-
         const url = URLS.ACCOUNT.LOGIN
         return http.post(url, data)
     }

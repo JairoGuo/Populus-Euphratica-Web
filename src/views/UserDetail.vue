@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="UserDetail">
     <sui-container>
@@ -20,7 +22,7 @@
             </span>
           </div>
         </sui-grid-column>
-        <sui-grid-column :width="4">
+        <sui-grid-column :width="8">
           <sui-header>
             {{userInfo.nickname ?
             userInfo.nickname :
@@ -65,9 +67,9 @@
           </div>
 
           <div>
-            <sui-button size=mini color="green">关注</sui-button>
-            <sui-button size=mini>私信</sui-button>
-            <sui-button color="orange" size=mini>打赏作者</sui-button>
+            <sui-button size=mini color="green">{{$t('user.follow')}}</sui-button>
+            <sui-button size=mini>{{$t('user.privateMessage')}}</sui-button>
+            <sui-button color="orange" size=mini>{{$t('user.reward')}}</sui-button>
           </div>
 
         </sui-grid-column>
@@ -77,7 +79,7 @@
 
             <sui-card-content>
 
-              <sui-card-header>介绍</sui-card-header>
+              <sui-card-header>{{$t('user.introduction')}}</sui-card-header>
 
             </sui-card-content>
 
@@ -93,7 +95,7 @@
       <sui-divider></sui-divider>
       <sui-tab @change="handleChange" :active-index="activeIndex" :menu="{ vertical: true, fluid: true }"
                menu-position="left">
-        <sui-tab-pane class="tab-pane" title="个人主页">
+        <sui-tab-pane class="tab-pane" :title="$t('user.profiles')">
           <sui-grid>
 
             <sui-grid-column :width="12">
@@ -102,7 +104,7 @@
                 <sui-card class="ui fluid">
 
                   <sui-card-content>
-                    <sui-card-header>个人档案</sui-card-header>
+                    <sui-card-header>{{$t('user.personalInformation')}}</sui-card-header>
 
                   </sui-card-content>
 
@@ -111,10 +113,7 @@
 
                     <sui-grid>
                       <sui-grid-row>
-
-
                         <sui-grid-column>
-
                           <sui-container textAlign="left">
                             <div>
                               <span>ID: {{userInfo.username}}</span>
@@ -123,39 +122,38 @@
                                  v-show="isLogin"
                                  style="color: #999999">
                                 <sui-icon name="edit online"/>
-                                编辑</a>
+                                {{$t('user.edit')}}</a>
 
                             </div>
-
                             <sui-divider></sui-divider>
 
                             <sui-grid>
                               <sui-grid-column :width="8">
                                 <p>
-                                  昵称: {{userInfo.nickname}}
+                                  {{$t('user.nickname')}}: {{userInfo.nickname}}
                                 </p>
                                 <p>
-                                  姓名: {{userInfo.name}}
+                                  {{$t('user.name')}}: {{userInfo.name}}
                                 </p>
                                 <p>
                                   Email: {{userInfo.email}}
                                 </p>
                                 <p>
-                                  生日: {{userInfo.birthday}}
+                                  {{$t('user.birthday')}}: {{userInfo.birthday}}
                                 </p>
                                 <p>
-                                  性别: {{userInfo.sex}}
+                                  {{$t('user.sex')}}: {{userInfo.sex}}
                                 </p>
 
                               </sui-grid-column>
 
                               <sui-grid-column :width="8">
                                 <p>
-                                  个人主页: <a
+                                  {{$t('user.homepage')}}: <a
                                   :href="userInfo.website">{{userInfo.website}}</a>
                                 </p>
                                 <p>
-                                  学历: {{userInfo.education}}
+                                  {{$t('user.education')}}: {{userInfo.education}}
                                 </p>
 
                               </sui-grid-column>
@@ -182,7 +180,7 @@
                 <sui-card class="ui fluid">
                   <sui-card-content>
                     <sui-card-header>
-                      技能
+                      {{$t('user.skill')}}
                     </sui-card-header>
                   </sui-card-content>
 
@@ -192,7 +190,7 @@
                        v-show="isLogin"
                        class="ui right floated aligned" style="color: #999999">
                       <sui-icon name="edit online"/>
-                      编辑</a>
+                      {{$t('user.edit')}}</a>
                     <div v-if="userInfo.skill !== ''">
                       <sui-label style="margin-top: 5px; margin-bottom: 5px"
                                  size="mini"
@@ -212,7 +210,7 @@
                 <sui-card class="ui fluid">
                   <sui-card-content>
                     <sui-card-header>
-                      开源项目 & 文章著作
+                      {{$t('user.openSourceProjectWorks')}}
                     </sui-card-header>
                   </sui-card-content>
                   <sui-card-content>
@@ -237,7 +235,7 @@
                 <sui-card class="ui fluid">
                   <sui-card-content>
                     <sui-card-header>
-                      工作信息
+                      {{$t('user.workInformation')}}
                     </sui-card-header>
                   </sui-card-content>
 
@@ -248,16 +246,16 @@
                          v-show="isLogin"
                          class="ui right floated aligned" style="color: #999999">
                         <sui-icon name="edit online"/>
-                        编辑</a>
+                        {{$t('user.edit')}}</a>
                       <p>
-                        公司: {{userInfo.company}}
+                        {{$t('user.company')}}: {{userInfo.company}}
                       </p>
                       <p>
-                        职位: {{userInfo.position}}
+                        {{$t('user.position')}}: {{userInfo.position}}
                       </p>
 
                       <p>
-                        行业: {{userInfo.industry}}
+                        {{$t('user.industry')}}: {{userInfo.industry}}
                       </p>
 
                     </sui-container>
@@ -269,23 +267,23 @@
               </sui-grid-row>
               <sui-grid-row style="padding-top: 28px">
                 <sui-grid-column :width="3">
-                  <p>注册时间：{{ userInfo.created_at }}</p>
+                  <p>{{$t('user.registrationTime')}}：{{ userInfo.created_at }}</p>
                 </sui-grid-column>
               </sui-grid-row>
             </sui-grid-column>
 
           </sui-grid>
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" align="left" title="我的博客">
-          <a is="sui-label" color="orange" ribbon="right">
-            Specs
-          </a>
+        <sui-tab-pane class="tab-pane" label="34" align="left" :title="$t('user.MyBlog')">
+          <div is="sui-label" color="orange" ribbon="right">
+            文章
+          </div>
           <sui-item-group>
             <sui-item v-for="i in articles" :key="i.article_id">
 
               <sui-item-content>
                 <sui-item-header>
-                  <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                  <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
                                style="color: #212121"
                   >
                     {{i.title}}
@@ -298,7 +296,7 @@
                 </sui-item-meta>
                 <sui-item-description>
                   <p>
-                    <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
+                    <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
                                  style="color: #888"
                     >
                       {{i.abstract | wordLimit}}
@@ -316,8 +314,7 @@
 
                 </sui-item-extra>
               </sui-item-content>
-              <router-link :to="{name: 'BlogView', params: { id: i.article_id }}"
-                           style="color: #888">
+              <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}" style="color: #888">
                 <sui-item-image class="cover-img"
                                 :style="{'background-image': 'url('+ i.cover +')',
                                 width: '180px',
@@ -344,19 +341,36 @@
 
 
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" title="我的问答">
+        <sui-tab-pane class="tab-pane" label="14" title="我的问答(Dev stage)">
           我的问答
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" title="我的圈子">
+        <sui-tab-pane class="tab-pane" label="23" title="我的圈子(Dev stage)">
           我的圈子
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" title="我的收藏">
+        <sui-tab-pane class="tab-pane"  label="4" title="我的收藏(Dev stage)">
           我的收藏
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" title="我的关注">
+        <sui-tab-pane class="tab-pane"  label="4" align="left" title="我的专栏">
+          <sui-item-group divided>
+            <sui-item  v-for="i in categorys" :key="i.id">
+              <!--        <sui-item-image size="tiny" src="static/images/wireframes/image.png" />-->
+              <sui-item-content>
+                <sui-item-header href="javascript:void(0)">
+                  {{i.name}}
+                </sui-item-header>
+                <sui-item-content>
+                  {{i.summary}}
+                </sui-item-content>
+              </sui-item-content>
+            </sui-item>
+
+          </sui-item-group>
+
+        </sui-tab-pane>
+        <sui-tab-pane class="tab-pane" label="10" title="我的关注(Dev stage)">
           我的关注
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" title="我的粉丝">
+        <sui-tab-pane class="tab-pane"  label="44" title="我的粉丝(Dev stage)">
           我的粉丝
         </sui-tab-pane>
       </sui-tab>
@@ -393,6 +407,7 @@
           name: null,
         },
         articles: [],
+        categorys: [],
         page: 1,
         end: false,
         top: true,
@@ -404,6 +419,15 @@
     },
     created() {
       this.getUserInfo(this.$route.params.username)
+      this.$api.blog.getCategory().then((res)=> {
+        this.categorys = res.data
+        // const category = res.data
+        // for (let i in category) {
+        //   this.categorys.push({text: category[i].name, value: category[i].id})
+        // }
+      })
+
+
     },
     methods: {
       getColor: function () {
@@ -438,7 +462,7 @@
           this.articles = res.data.results
           this.top = res.data.previous === null
           this.end = res.data.next === null
-          console.log(this.top, this.end)
+
           this.$loading.hide()
         })
       },
@@ -458,7 +482,8 @@
       }
     },
     mounted() {
-      this.activatePane(0);
+      this.activatePane(0)
+
     },
     computed: {
       ...mapState('account', {

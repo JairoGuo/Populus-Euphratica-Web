@@ -9,10 +9,20 @@ const ACCOUNT = {
     USER: 'accounts/user/'
 }
 
+
 const BLOG = {
-    LIST: 'articles/',
-    READ: 'articles/',
-    CREATE: 'articles/'
+    LIST: 'blog/articles/',
+    READ: 'blog/articles/',
+    CREATE: 'blog/articles/',
+    UPDATE: 'blog/articles/',
+    DELETE: 'blog/articles/'
+}
+
+const CATEGORY = {
+    LIST: 'blog/category/',
+    CREATE: 'blog/category/',
+    DELETE: 'blog/category/',
+    UPDATE: 'blog/category/'
 }
 
 const UPLOAD = {
@@ -22,6 +32,7 @@ const UPLOAD = {
 export default {
     ACCOUNT,
     BLOG,
+    CATEGORY,
     UPLOAD
 
 }

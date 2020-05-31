@@ -23,6 +23,39 @@ class Blog {
         return http.post(url, postData)
     }
 
+    updateArticle(articleId, postData) {
+        const url = URLS.BLOG.DELETE + articleId + '/'
+        return http.patch(url, postData)
+    }
+
+    deleteArticle(articleId) {
+        const url = URLS.BLOG.DELETE + articleId + '/'
+        return http.delete(url)
+
+    }
+
+    getCategory() {
+        const url = URLS.CATEGORY.LIST
+        return http.get(url)
+
+    }
+
+    createCategory(postData) {
+        const url = URLS.CATEGORY.CREATE
+        return http.post(url, postData)
+    }
+
+    updateCategory(categoryId, postData) {
+        const url = URLS.CATEGORY.UPDATE + categoryId + '/'
+        return http.patch(url, postData)
+    }
+
+    deleteCategory(id) {
+        const url = URLS.CATEGORY.DELETE + id + '/'
+
+        return http.delete(url)
+    }
+
 }
 
 export default new Blog()

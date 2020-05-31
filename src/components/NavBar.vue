@@ -73,12 +73,11 @@
         <sui-menu-item class="horizontally fitted item">
 
           <sui-dropdown
-            :icon="'world'"
+            :icon="null"
             floating
             button
             class="icon"
             v-model="selectedValue"
-
             :change="switchLang()"
             :menu-header="menuHeader"
             :search-in-menu="searchInMenu"
@@ -133,10 +132,10 @@
         <sui-menu-item class="horizontally fitted item">
           <sui-dropdown :icon="null" floating auto>
             <sui-image size="mini"
-                       :src="userInfo.avatar ? userInfo.avatar: defaultAvatar"
+                       :src="$auth.user.avatar? $auth.user.avatar: defaultAvatar"
                        avatar/>
             <sui-dropdown-menu>
-              <sui-header>{{userInfo.username}}</sui-header>
+              <sui-header>{{$auth.user.username}}</sui-header>
               <sui-divider></sui-divider>
               <router-link is="sui-dropdown-item" to="/users/me">
                 <sui-icon name="user"/>
@@ -146,6 +145,12 @@
                 <sui-icon name="user"/>
                 {{$t('nav.account')}}
               </router-link>
+
+              <router-link is="sui-dropdown-item" :to="{name: 'Manage'}">
+                <sui-icon name="file alternate outline"/>
+                {{$t('nav.articlesManage')}}
+              </router-link>
+
               <sui-dropdown-item>
                 <sui-icon name="help"/>
                 {{$t('nav.help')}}
@@ -199,21 +204,43 @@
             key: 'zh_CN',
             text: '简体中文',
             value: 'zh_CN',
+            flag: 'cn'
           },
           {
             key: 'zh_TW',
             text: '繁體中文 (臺灣)',
             value: 'zh_TW',
+            flag: 'tw'
           },
           {
             key: 'zh_HK',
             text: '繁體中文 (香港)',
             value: 'zh_HK',
+            flag: 'hk'
           },
           {
             key: 'en_US',
             text: 'English (U.S.A)',
             value: 'en_US',
+            flag: 'us'
+          },
+          {
+            key: 'ru_RU',
+            text: 'русский язык',
+            value: 'ru_RU',
+            flag: 'ru'
+          },
+          {
+            key: 'fr_FR',
+            text: 'Français',
+            value: 'fr_FR',
+            flag: 'fr'
+          },
+          {
+            key: 'ja_JP',
+            text: '日本語',
+            value: 'ja_JP',
+            flag: 'jp'
           },
         ],
       }

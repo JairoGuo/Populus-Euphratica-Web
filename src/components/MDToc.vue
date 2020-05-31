@@ -402,7 +402,6 @@
 
             a.id = id
             a.innerHTML = content
-            console.log(content)
             node.appendChild(a)
             // console.log(id, content, node.tagName)
             node.onclick = function() {

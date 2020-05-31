@@ -1,7 +1,7 @@
 import axios from "axios"
 import auth from "@/utils/auth"
 // import router from "../routes"
-
+import message from "@/utils/message";
 const BASE_URL = 'api/'
 
 
@@ -23,11 +23,13 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(response => {
       return response
     },err => {
-      // auth.clearUserToken()
-      // router.replace("/login")
       console.log(err.response)
-      console.log("==========")
-      return Promise.reject(err)
+    if(err.message.includes('timeout')){
+        message.error('请求超时，请稍后再试')
+        return Promise.reject(err);
+    }
+    message.error('网络连接失败，请稍后再试')
+    return Promise.reject(err)
     })
 
 export default http

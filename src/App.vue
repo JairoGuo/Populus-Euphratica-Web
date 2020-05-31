@@ -4,7 +4,7 @@
       <NavBar/>
     </div>
 
-    <router-view style="padding-top: 40px"/>
+    <router-view style="padding-top: 20px"/>
     <div></div>
   </div>
 </template>

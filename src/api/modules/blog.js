@@ -47,13 +47,19 @@ class Blog {
 
     updateCategory(categoryId, postData) {
         const url = URLS.CATEGORY.UPDATE + categoryId + '/'
-        return http.patch(url, postData)
+        return http.post(url, postData)
     }
 
     deleteCategory(id) {
         const url = URLS.CATEGORY.DELETE + id + '/'
 
         return http.delete(url)
+    }
+
+    createComment(postData) {
+        const url = URLS.COMMENT.CREATE
+        return http.post(url, postData)
+
     }
 
 }

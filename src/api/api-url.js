@@ -11,7 +11,7 @@ const ACCOUNT = {
 
 
 const BLOG = {
-    LIST: 'blog/articles/',
+    LIST: 'blog/articles-list/',
     READ: 'blog/articles/',
     CREATE: 'blog/articles/',
     UPDATE: 'blog/articles/',
@@ -25,6 +25,11 @@ const CATEGORY = {
     UPDATE: 'blog/category/'
 }
 
+const COMMENT = {
+
+    CREATE: 'blog/comments/'
+}
+
 const UPLOAD = {
     UPLOAD: 'upload-image/'
 }
@@ -33,6 +38,7 @@ export default {
     ACCOUNT,
     BLOG,
     CATEGORY,
+    COMMENT,
     UPLOAD
 
 }

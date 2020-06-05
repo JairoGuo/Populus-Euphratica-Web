@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import News from '../views/News.vue'
 
 
 Vue.use(VueRouter)
@@ -9,7 +8,7 @@ const routes = [
     {
         path: '/news',
         name: 'News',
-        component: News,
+        component: () => import( '../views/News.vue'),
         meta: {
             title: '资讯'
         }
@@ -17,16 +16,16 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        redirect: '/blog'
+        redirect: '/bloglist'
     },
 
     {
-        path: '/blog',
-        name: 'Blog',
+        path: '/bloglist',
+        name: 'BlogList',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import( '../views/blog/Blog.vue'),
+        component: () => import( '../views/blog/BlogList.vue'),
         meta: {
             title: '博客'
         }
@@ -48,9 +47,17 @@ const routes = [
         }
     },
     {
-        path: "/users/:username/",
+        path: "/users/:username",
         name: "UserDetail",
-        component: () => import('../views/UserDetail.vue')
+        component: () => import('../views/UserDetail.vue'),
+    },
+    {
+        path: '/users/:username/blog',
+        name: 'Blog',
+        component: () => import( '@/views/users/Blog'),
+        meta: {
+            title: '博客'
+        }
     },
     {
         path: '/editor',

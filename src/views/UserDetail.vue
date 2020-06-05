@@ -246,7 +246,8 @@
                          v-show="isLogin"
                          class="ui right floated aligned" style="color: #999999">
                         <sui-icon name="edit online"/>
-                        {{$t('user.edit')}}</a>
+                        {{$t('user.edit')}}
+                      </a>
                       <p>
                         {{$t('user.company')}}: {{userInfo.company}}
                       </p>
@@ -274,10 +275,15 @@
 
           </sui-grid>
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" label="34" align="left" :title="$t('user.MyBlog')">
-          <div is="sui-label" color="orange" ribbon="right">
-            文章
-          </div>
+        <sui-tab-pane class="tab-pane" :label="userInfo.articles_num.toString()" align="left" :title="$t('user.MyBlog')">
+          <router-link
+            is="sui-label"
+            color="orange"
+            ribbon="right"
+            :to="{name: 'Blog', params: $route.params.username}"
+          >
+            访问博客主页
+          </router-link>
           <sui-item-group>
             <sui-item v-for="i in articles" :key="i.article_id">
 
@@ -309,7 +315,7 @@
 
                   <span>{{i.created_at | changeTime}}</span>
                   <span class="ui right floated">阅读数：{{i.click_nums}}</span>
-                  <span class="ui  right floated">评论数：{{i.blog_comment | commentNum  }}</span>
+                  <span class="ui  right floated">评论数：{{i.comment_num  }}</span>
 
 
                 </sui-item-extra>
@@ -347,10 +353,10 @@
         <sui-tab-pane class="tab-pane" label="23" title="我的圈子(Dev stage)">
           我的圈子
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane"  label="4" title="我的收藏(Dev stage)">
+        <sui-tab-pane class="tab-pane" label="4" title="我的收藏(Dev stage)">
           我的收藏
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane"  label="4" align="left" title="我的专栏">
+        <sui-tab-pane class="tab-pane" :label="userInfo.category_num.toString()" align="left" title="我的专栏">
           <sui-item-group divided>
             <sui-item  v-for="i in categorys" :key="i.id">
               <!--        <sui-item-image size="tiny" src="static/images/wireframes/image.png" />-->

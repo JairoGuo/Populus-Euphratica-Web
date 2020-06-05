@@ -27,9 +27,11 @@ http.interceptors.response.use(response => {
     if(err.message.includes('timeout')){
         message.error('请求超时，请稍后再试')
         return Promise.reject(err);
+    } else {
+        message.error('网络连接失败，请稍后再试')
+        return Promise.reject(err)
     }
-    message.error('网络连接失败，请稍后再试')
-    return Promise.reject(err)
+
     })
 
 export default http

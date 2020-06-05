@@ -3,15 +3,34 @@
     <sui-container align="left">
       <sui-grid>
 
+        <sui-grid-column :width="1">
+          <sui-button circular icon="settings" />
+          <br>
+          <br>
+          <sui-button  circular icon="settings" />
+          <br>
+          <br>
+          <sui-button  circular icon="settings" />
 
-        <sui-grid-column :width="12">
+
+          <sui-rail >
+
+            <div class="ui sticky">
+              <h3 class="ui header">Stuck Content</h3>
+            </div>
+
+          </sui-rail>
+
+
+        </sui-grid-column>
+        <sui-grid-column :width="11">
           <sui-grid-row style="background-color: white; border-radius: .28571429rem; padding: 15px">
             <div ref="headerinfo" id="hhh" style="margin: 10px">
               <sui-header is="h1">{{articles.title}}</sui-header>
               <sui-header-content style="margin: 5px">
                 <div style="margin-top: 10px; margin-bottom: 10px">
                   <router-link
-                    :to="{name: 'UserDetail', params: { username: articles.username }}">
+                    :to="{name: 'Blog', params: { username: articles.username }}">
                     <sui-header size="small" align="">
                       <sui-image :src="articles.avatar ? articles.avatar: defaultAvatar" avatar/>
                       <sui-header-content>
@@ -51,7 +70,62 @@
             />
           </sui-grid-row>
 
+          <sui-comment-group class="ui fluid" style="max-width: none">
+            <h3 is="sui-header" dividing>评论</h3>
+            <sui-form reply >
+              <textarea v-model="commentContent" :placeholder="replyTips" />
+              <br>
+              <br>
+
+
+              <sui-button
+                content="发表评论"
+                label-position="left"
+                icon="edit"
+
+                primary
+                @click="createComment()"
+              />
+            </sui-form>
+
+            <sui-comment v-for="i in articles.comments" :key="i.id">
+              <sui-comment-avatar  :src="i.avatar ? i.avatar: defaultAvatar" />
+              <sui-comment-content>
+                <a is="sui-comment-author">{{i.username}}</a>
+                <sui-comment-metadata>
+                  <div>{{i.create_time | changeTime}}</div>
+                </sui-comment-metadata>
+                <sui-comment-text>{{i.content}}</sui-comment-text>
+                <sui-comment-actions>
+                  <sui-comment-action>
+                    <a @click="replyComment(i.id, i.username)" style="color: #475669">回复</a>
+                  </sui-comment-action>
+                </sui-comment-actions>
+              </sui-comment-content>
+              <sui-comment-group v-if="i.replies">
+                <sui-comment v-for="reply in i.replies" :key="reply.id">
+                  <sui-comment-avatar :src="reply.avatar ? reply.avatar: defaultAvatar" />
+                  <sui-comment-content>
+                    <a is="sui-comment-author">{{reply.username}}</a>
+                    <sui-comment-metadata>
+                      <div>{{reply.create_time  | changeTime}}</div>
+                    </sui-comment-metadata>
+                    <sui-comment-text>
+                     {{reply.content}}
+                    </sui-comment-text>
+<!--                    <sui-comment-actions>-->
+<!--                      <sui-comment-action>回复</sui-comment-action>-->
+<!--                    </sui-comment-actions>-->
+                  </sui-comment-content>
+                </sui-comment>
+              </sui-comment-group>
+            </sui-comment>
+
+
+          </sui-comment-group>
+
         </sui-grid-column>
+
 
         <sui-grid-column :width="4">
           <sui-grid-row style="padding-bottom: 14px">
@@ -61,7 +135,7 @@
 
 
               <sui-card-content>
-                <sui-card-header>Elliot Fu</sui-card-header>
+                <sui-card-header>目录</sui-card-header>
                 <sui-card-meta>Friend</sui-card-meta>
                 <sui-card-description
                 >Elliot Fu is a film-maker from New York.
@@ -104,17 +178,25 @@
   import {mapState} from "vuex"
   var timeago = require('timeago.js');
 
+  import $ from 'jquery'
+
+
   export default {
+
     name: "BlogView",
     data() {
       return {
         articles: {
           content: '',
-          avatar: ''
+          avatar: '',
+          comments: null
         },
         md_toc: '',
-        currentHeight: document.body.clientHeight - 250,
+        currentHeight: document.body.clientHeight - 270,
         userInfo: {},
+        commentId: null,
+        commentContent: '',
+        replyTips: ''
 
       }
 
@@ -132,7 +214,48 @@
           this.$loading.hide()
         })
 
+      },
+      createComment() {
+
+        let postData = {
+          blog_id: this.$route.params.id,
+          content: this.commentContent,
+          reply_comment: this.commentId
+        }
+
+        this.$api.blog.createComment(postData).then((res)=>{
+
+
+          if (this.commentId === null) {
+            console.log("comment")
+            this.articles.comments.push(res.data);
+
+
+          } else {
+            console.log('reply')
+            console.log(this.articles.comments.findIndex(item => item.id === this.commentId))
+            this.articles.comments[this.articles.comments.findIndex(
+              item => item.id === this.commentId)].replies.push(res.data)
+
+          }
+
+          this.$message.success('评论成功')
+          this.replyTips = ''
+          this.commentId = null
+          this.commentContent = ''
+        }).catch(()=>{
+          this.$message.error('评论失败')
+
+        })
+
+      },
+
+      replyComment(commentId, username) {
+        this.replyTips = '回复：' + username
+        this.commentId = commentId
+
       }
+
     },
 
     created() {
@@ -144,9 +267,18 @@
     },
     mounted() {
 
+      // this.$(this.$el).find('.ui.sticky').sticky({
+      //   context: '#example2',
+      //   pushing: true
+      // })
+      $(this.$el).find('.ui.sticky').sticky({
+        context: '#example2',
+        pushing: true
+      })
+
       window.onresize = () => {
         return (() => {
-          this.currentHeight = document.body.clientHeight - 220
+          this.currentHeight = document.body.clientHeight - 270
         })();
       }
 

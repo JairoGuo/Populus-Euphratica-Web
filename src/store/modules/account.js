@@ -86,6 +86,9 @@ const actions = {
             document.title = res.data.username
             loading.hide()
 
+        }).catch(()=>{
+            loading.hide()
+
         })
     },
     [ACCOUNT.GO_UPDATE_USERINFO]({commit, state}, formData) {

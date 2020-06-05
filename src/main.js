@@ -4,8 +4,9 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import ElemantUI from 'element-ui'
+import $ from 'jquery'
 import SuiVue from 'semantic-ui-vue'
-import JsCookies from 'js-cookie'
+// import JsCookies from 'js-cookie'
 import Moment from "moment";
 import mavonEditor from 'mavon-editor'
 
@@ -22,7 +23,7 @@ import message from "@/utils/message"
 import auth from "@/utils/auth"
 import i18n from '@/assets/lang'
 
-Vue.use(JsCookies)
+// Vue.use(JsCookies)
 Vue.use(SuiVue);
 Vue.use(ElemantUI)
 Vue.use(VueAxios, axios)
@@ -35,6 +36,7 @@ Vue.prototype.$loading = loading
 Vue.prototype.$message = message
 Vue.prototype.$auth = auth
 Vue.config.productionTip = false
+Vue.prototype.$ = $
 
 new Vue({
     router,

@@ -64,7 +64,7 @@
 
                   <span>{{i.created_at | changeTime}}</span>
                   <span class="ui right floated">阅读数：{{i.click_nums}}</span>
-                  <span class="ui  right floated">评论数：{{i.blog_comment | commentNum  }}</span>
+                  <span class="ui  right floated">评论数：{{i.comment_num}}</span>
                 </sui-item-extra>
               </sui-item-content>
               <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
@@ -143,7 +143,7 @@
   import {mapState} from "vuex"
 
   export default {
-    name: 'Blog',
+    name: 'BlogList',
     components: {InfiniteLoading},
 
     data() {
@@ -204,29 +204,6 @@
 
       ...filters,
 
-      // changeTime(val) {
-      //   let time = new Date(val); //先将接收到的json格式的日期数据转换成可用的js对象日期
-      //   return timeago.format(time, 'zh_CN'); //转换成类似于几天前的格式
-      // },
-      // wordLimit(value, num) {
-      //   const nums = num || '100';
-      //   if (!value) return '';
-      //   if (value.length > nums) {
-      //     return value.slice(0, nums) + '...';
-      //   }
-      //   return value;
-      //
-      // },
-      // commentNum(value) {
-      //   return value.length
-      // },
-      // setAbstract(value) {
-      //   if (value.abstract) {
-      //     return value.abstract.substring(0, 100) + "...";
-      //   } else {
-      //     return value.content.substring(0, 100) + "..."
-      //   }
-      // }
     },
 
   }

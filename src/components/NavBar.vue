@@ -16,7 +16,7 @@
         :active="isActive($t('nav.blog'))"
         :content="$t('nav.blog')"
         @click.native="select($t('nav.blog'))"
-        to="/blog"
+        :to="{name: 'BlogList'}"
       />
       <router-link
         is="sui-menu-item"

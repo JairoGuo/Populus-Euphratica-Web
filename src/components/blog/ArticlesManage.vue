@@ -21,7 +21,7 @@
               <sui-item-extra class="ui end floated">
                 <span>{{i.created_at | time}}</span>
                 <span>阅读数：{{i.click_nums}}</span>
-                <span>评论数：{{ i.blog_comment | commentNum}}</span>
+                <span>评论数：{{ i.comment_num}}</span>
                 <a class="ui  right floated" style="color: #ca0c16" @click="deleteArticle(i.article_id)">删除</a>
                 <router-link class="ui  right floated" target="_blank"
                              :to="{name: 'BlogView', params: { id: i.article_id }}"
@@ -68,7 +68,7 @@
               <sui-item-extra class="ui end floated">
                 <span>{{i.created_at | time}}</span>
                 <span>阅读数：{{i.click_nums}}</span>
-                <span>评论数：{{ i.blog_comment | commentNum}}</span>
+                <span>评论数：{{ i.comment_num}}</span>
                 <a class="ui  right floated" style="color: #ca0c16" @click="deleteArticle(i.article_id)">删除</a>
                 <router-link class="ui  right floated" target="_blank"
                              :to="{name: 'BlogView', params: { id: i.article_id }}"
@@ -113,8 +113,8 @@
 
               <sui-item-extra class="ui end floated">
                 <span>{{i.created_at | time}}</span>
-                <span>阅读数：{{i.click_nums}}</span>
-                <span>评论数：{{ i.blog_comment | commentNum}}</span>
+                <span>阅读数：{{i.click_nums }}</span>
+                <span>评论数：{{ i.comment_num}}</span>
                 <a class="ui  right floated" style="color: #ca0c16" @click="deleteArticle(i.article_id)">删除</a>
                 <router-link class="ui  right floated" target="_blank"
                              :to="{name: 'BlogView', params: { id: i.article_id }}"

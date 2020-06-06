@@ -36,7 +36,7 @@
         <sui-form-fields fields="two">
           <sui-form-field>
             <label>邮箱</label>
-            <input type="text" placeholder="邮箱"/>
+            <input disabled="true" v-model="archives.email" type="text" placeholder="邮箱"/>
           </sui-form-field>
 
         </sui-form-fields>
@@ -85,6 +85,7 @@
           website: '',
           name: '',
           education: '',
+          email: '',
           birthday: '',
           sex: ''
         }
@@ -109,6 +110,7 @@
         this.archives.nickname = this.userInfo.nickname
         this.archives.website = this.userInfo.website
         this.archives.name = this.userInfo.name
+        this.archives.email = this.userInfo.email
         this.archives.education = this.userInfo.education
         this.archives.birthday = this.userInfo.birthday
         this.archives.sex = this.userInfo.sex

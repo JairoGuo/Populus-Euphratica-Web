@@ -2,7 +2,7 @@
   <div>
 
     <sui-button size="mini" fluid @click.native="toggle">上传头像</sui-button>
-    <sui-modal v-model="open">
+    <sui-modal size="tiny" v-model="open">
       <sui-modal-header>上传图片</sui-modal-header>
       <sui-modal-content image>
         <div style="margin-right: 15px">

@@ -56,15 +56,18 @@
                       style="color: #475669"
                       :to="{name: 'UserDetail', params: { username: i.username }}">
 
-                      <sui-image size="mini" circular :src="i.avatar ? i.avatar: defaultAvatar" avatar />
+                      <sui-image size="mini" circular :src="i.avatar ? i.avatar: defaultAvatar" avatar/>
                       {{i.username}}
 
                   </router-link>
                   </span>
 
                   <span>{{i.created_at | changeTime}}</span>
-                  <span class="ui right floated">阅读数：{{i.click_nums}}</span>
-                  <span class="ui  right floated">评论数：{{i.comment_num}}</span>
+
+                  <span class="ui right floated"><sui-icon name="eye"/>{{i.click_nums}}</span>
+                  <span class="ui  right floated"><sui-icon name="comment"/>{{i.comment_num}}</span>
+                  <span class="ui  right floated"><sui-icon name="thumbs up"/>{{i.like_num}}</span>
+
                 </sui-item-extra>
               </sui-item-content>
               <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
@@ -81,7 +84,7 @@
             </sui-item>
           </sui-item-group>
           <infinite-loading v-if="blog" @infinite="infiniteHandler">
-            <div slot="spinner">小弟拼命加载中...</div>
+            <div slot="spinner"><sui-loader active inline /></div>
             <div slot="no-more">没有啦！别翻了😘</div>
             <div slot="no-results">暂无数据:(</div>
           </infinite-loading>

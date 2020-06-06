@@ -30,6 +30,11 @@ const COMMENT = {
     CREATE: 'blog/comments/'
 }
 
+const LIKE = {
+
+    CREATE: 'blog/likes/'
+}
+
 const UPLOAD = {
     UPLOAD: 'upload-image/'
 }
@@ -39,6 +44,7 @@ export default {
     BLOG,
     CATEGORY,
     COMMENT,
-    UPLOAD
+    UPLOAD,
+    LIKE
 
 }

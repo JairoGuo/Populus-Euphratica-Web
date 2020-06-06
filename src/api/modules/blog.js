@@ -62,6 +62,13 @@ class Blog {
 
     }
 
+    like(postData) {
+
+        const url = URLS.LIKE.CREATE
+        return http.post(url, postData)
+
+    }
+
 }
 
 export default new Blog()

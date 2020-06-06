@@ -1,30 +1,25 @@
 <template>
   <div style="background-color: #e9ecef">
+
     <sui-container align="left">
+
+
       <sui-grid>
 
-        <sui-grid-column :width="1">
-          <sui-button circular icon="settings" />
-          <br>
-          <br>
-          <sui-button  circular icon="settings" />
-          <br>
-          <br>
-          <sui-button  circular icon="settings" />
 
+        <sui-grid-column style="margin-top: 150px" align="center" :width="1">
 
-          <sui-rail >
-
-            <div class="ui sticky">
-              <h3 class="ui header">Stuck Content</h3>
-            </div>
-
-          </sui-rail>
-
+          <sui-button size="big" @click="like" :color="articles.is_like ? 'green': null" circular icon="thumbs up"/>
+          <br><br>
+          <sui-button size="medium" @click="focusComment" circular icon="comment"/>
+          <br><br>
+          <sui-button size="medium" circular icon="bookmark"/>
+          <br><br>
+          <sui-button size="medium" circular icon="share alternate"/>
 
         </sui-grid-column>
         <sui-grid-column :width="11">
-          <sui-grid-row style="background-color: white; border-radius: .28571429rem; padding: 15px">
+          <sui-grid-row style="background-color: white;  border-radius: .28571429rem; padding: 15px">
             <div ref="headerinfo" id="hhh" style="margin: 10px">
               <sui-header is="h1">{{articles.title}}</sui-header>
               <sui-header-content style="margin: 5px">
@@ -70,59 +65,66 @@
             />
           </sui-grid-row>
 
-          <sui-comment-group class="ui fluid" style="max-width: none">
-            <h3 is="sui-header" dividing>评论</h3>
-            <sui-form reply >
-              <textarea v-model="commentContent" :placeholder="replyTips" />
-              <br>
-              <br>
+          <h3 is="sui-header" dividing>评论</h3>
+          <sui-grid-row style="padding-top: 14px">
+
+            <sui-card class="ui fluid " style="box-shadow: none">
+
+              <sui-card-content>
+                  <sui-comment-group class="ui fluid" style="max-width: none">
+                    <sui-form reply>
+                      <textarea ref="commentTextarea" v-model="commentContent" :placeholder="replyTips"/>
+                      <br>
+                      <br>
 
 
-              <sui-button
-                content="发表评论"
-                label-position="left"
-                icon="edit"
+                      <sui-button
+                        floated="right"
+                        content="发表评论"
 
-                primary
-                @click="createComment()"
-              />
-            </sui-form>
+                        primary
+                        @click="createComment()"
+                      />
+                    </sui-form>
+                    <sui-comment v-for="i in articles.comments" :key="i.id">
+                      <sui-comment-avatar :src="i.avatar ? i.avatar: defaultAvatar"/>
+                      <sui-comment-content>
+                        <a is="sui-comment-author">{{i.username}}</a>
+                        <sui-comment-metadata>
+                          <div>{{i.create_time | changeTime}}</div>
+                        </sui-comment-metadata>
+                        <sui-comment-text>{{i.content}}</sui-comment-text>
+                        <sui-comment-actions>
+                          <sui-comment-action>
+                            <a @click="replyComment(i.id, i.username)" style="color: #475669">回复</a>
+                          </sui-comment-action>
+                        </sui-comment-actions>
+                      </sui-comment-content>
+                      <sui-comment-group v-if="i.replies">
+                        <sui-comment v-for="reply in i.replies" :key="reply.id">
+                          <sui-comment-avatar :src="reply.avatar ? reply.avatar: defaultAvatar"/>
+                          <sui-comment-content>
+                            <a is="sui-comment-author">{{reply.username}}</a>
+                            <sui-comment-metadata>
+                              <div>{{reply.create_time | changeTime}}</div>
+                            </sui-comment-metadata>
+                            <sui-comment-text>
+                              {{reply.content}}
+                            </sui-comment-text>
+                            <!--                    <sui-comment-actions>-->
+                            <!--                      <sui-comment-action>回复</sui-comment-action>-->
+                            <!--                    </sui-comment-actions>-->
+                          </sui-comment-content>
+                        </sui-comment>
+                      </sui-comment-group>
+                    </sui-comment>
 
-            <sui-comment v-for="i in articles.comments" :key="i.id">
-              <sui-comment-avatar  :src="i.avatar ? i.avatar: defaultAvatar" />
-              <sui-comment-content>
-                <a is="sui-comment-author">{{i.username}}</a>
-                <sui-comment-metadata>
-                  <div>{{i.create_time | changeTime}}</div>
-                </sui-comment-metadata>
-                <sui-comment-text>{{i.content}}</sui-comment-text>
-                <sui-comment-actions>
-                  <sui-comment-action>
-                    <a @click="replyComment(i.id, i.username)" style="color: #475669">回复</a>
-                  </sui-comment-action>
-                </sui-comment-actions>
-              </sui-comment-content>
-              <sui-comment-group v-if="i.replies">
-                <sui-comment v-for="reply in i.replies" :key="reply.id">
-                  <sui-comment-avatar :src="reply.avatar ? reply.avatar: defaultAvatar" />
-                  <sui-comment-content>
-                    <a is="sui-comment-author">{{reply.username}}</a>
-                    <sui-comment-metadata>
-                      <div>{{reply.create_time  | changeTime}}</div>
-                    </sui-comment-metadata>
-                    <sui-comment-text>
-                     {{reply.content}}
-                    </sui-comment-text>
-<!--                    <sui-comment-actions>-->
-<!--                      <sui-comment-action>回复</sui-comment-action>-->
-<!--                    </sui-comment-actions>-->
-                  </sui-comment-content>
-                </sui-comment>
-              </sui-comment-group>
-            </sui-comment>
+                  </sui-comment-group>
 
+              </sui-card-content>
 
-          </sui-comment-group>
+            </sui-card>
+          </sui-grid-row>
 
         </sui-grid-column>
 
@@ -176,10 +178,8 @@
 <script>
   import {ACCOUNT} from "@/store/types"
   import {mapState} from "vuex"
+
   var timeago = require('timeago.js');
-
-  import $ from 'jquery'
-
 
   export default {
 
@@ -217,44 +217,82 @@
       },
       createComment() {
 
-        let postData = {
-          blog_id: this.$route.params.id,
-          content: this.commentContent,
-          reply_comment: this.commentId
+
+        if (this.logStatus) {
+          let postData = {
+            blog_id: this.$route.params.id,
+            content: this.commentContent,
+            reply_comment: this.commentId
+          };
+
+          this.$api.blog.createComment(postData).then((res) => {
+
+
+            if (this.commentId === null) {
+              this.articles.comments.push(res.data);
+
+            } else {
+              console.log('reply')
+              console.log(this.articles.comments.findIndex(item => item.id === this.commentId))
+              this.articles.comments[this.articles.comments.findIndex(
+                item => item.id === this.commentId)].replies.push(res.data)
+
+            }
+
+            this.$message.success('评论成功')
+            this.replyTips = ''
+            this.commentId = null
+            this.commentContent = ''
+          }).catch(() => {
+            this.$message.error('评论失败')
+
+          });
+
+        } else {
+          this.$message.warning('请登录后评论')
+
         }
 
-        this.$api.blog.createComment(postData).then((res)=>{
-
-
-          if (this.commentId === null) {
-            console.log("comment")
-            this.articles.comments.push(res.data);
-
-
-          } else {
-            console.log('reply')
-            console.log(this.articles.comments.findIndex(item => item.id === this.commentId))
-            this.articles.comments[this.articles.comments.findIndex(
-              item => item.id === this.commentId)].replies.push(res.data)
-
-          }
-
-          this.$message.success('评论成功')
-          this.replyTips = ''
-          this.commentId = null
-          this.commentContent = ''
-        }).catch(()=>{
-          this.$message.error('评论失败')
-
-        })
 
       },
 
       replyComment(commentId, username) {
-        this.replyTips = '回复：' + username
-        this.commentId = commentId
 
+        if (this.logStatus) {
+          this.replyTips = '回复：' + username;
+          this.commentId = commentId;
+
+        } else {
+          this.$message.warning('请登录后回复')
+
+        }
+
+      },
+
+      like() {
+        if (this.logStatus) {
+          let postData = {blog_id: this.$route.params.id}
+          this.$api.blog.like(postData).then((res) => {
+            this.articles.is_like = res.data.like
+          }).catch(() => {
+            this.$message.error('点赞出错')
+          })
+        } else {
+          this.$message.warning('请登录后点赞')
+        }
+
+
+      },
+
+      focusComment() {
+        if (this.logStatus) {
+          this.$refs.commentTextarea.focus();
+
+        } else {
+          this.$message.warning('请登录后评论')
+        }
       }
+
 
     },
 
@@ -266,15 +304,11 @@
 
     },
     mounted() {
-
-      // this.$(this.$el).find('.ui.sticky').sticky({
+      // $(this.$el).find('.ui.sticky').sticky({
       //   context: '#example2',
       //   pushing: true
       // })
-      $(this.$el).find('.ui.sticky').sticky({
-        context: '#example2',
-        pushing: true
-      })
+
 
       window.onresize = () => {
         return (() => {
@@ -290,7 +324,11 @@
       },
     },
     computed: {
-      ...mapState('account', {defaultAvatar: ACCOUNT.DEFAULT_AVATAR,}),
+      ...mapState('account', {
+        defaultAvatar: ACCOUNT.DEFAULT_AVATAR,
+        logStatus: ACCOUNT.LOG_STATUS
+
+      }),
       readTime() {
 
         let $_time = parseInt(this.articles.content.length / 300)

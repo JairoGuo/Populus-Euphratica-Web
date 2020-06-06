@@ -109,6 +109,7 @@
                     @imgAdd="$imgAdd"
                     @imgDel="$imgDel"
                     :tab-size="4"
+                    code-style="agate"
                     :style="{height: this.show ? this.currentHeight+'px': '100%', 'z-index': 10}"
                     @fullScreen="onfullScreen()"
                     v-model="article_data.content"/>
@@ -297,8 +298,8 @@
           this.article_data = res.data
           delete this.article_data['username']
           delete this.article_data['avatar']
-          delete this.article_data['blog_comment']
-          delete this.article_data['blog_like']
+          delete this.article_data['comments']
+          delete this.article_data['likes']
 
         })
       }

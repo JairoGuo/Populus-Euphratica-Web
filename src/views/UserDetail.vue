@@ -95,6 +95,7 @@
       <sui-divider></sui-divider>
       <sui-tab @change="handleChange" :active-index="activeIndex" :menu="{ vertical: true, fluid: true }"
                menu-position="left">
+        <!-- User Info -->
         <sui-tab-pane class="tab-pane" :title="$t('user.profiles')">
           <sui-grid>
 
@@ -142,7 +143,7 @@
                                   {{$t('user.birthday')}}: {{userInfo.birthday}}
                                 </p>
                                 <p>
-                                  {{$t('user.sex')}}: {{userInfo.sex}}
+                                  {{$t('user.sex')}}: {{userInfo.sex | getSex}}
                                 </p>
 
                               </sui-grid-column>
@@ -275,7 +276,8 @@
 
           </sui-grid>
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" :label="userInfo.articles_num.toString()" align="left" :title="$t('user.MyBlog')">
+        <!-- Blog -->
+        <sui-tab-pane class="tab-pane"  :label="userInfo.articles_num.toString()" align="left" :title="$t('user.MyBlog')">
           <router-link
             is="sui-label"
             color="orange"
@@ -314,8 +316,8 @@
 
 
                   <span>{{i.created_at | changeTime}}</span>
-                  <span class="ui right floated">阅读数：{{i.click_nums}}</span>
-                  <span class="ui  right floated">评论数：{{i.comment_num  }}</span>
+                  <span class="ui right floated"><sui-icon name="eye" />{{i.click_nums}}</span>
+                  <span class="ui  right floated"><sui-icon name="comment" />{{i.comment_num}}</span>
 
 
                 </sui-item-extra>
@@ -502,10 +504,24 @@
       }),
       ...mapGetters('account', {
         isLogin: ACCOUNT.GET_IS_LOG_IN
-      })
+      }),
+
+
     },
     filters: {
-      ...filters
+      ...filters,
+      getSex: (value)=> {
+
+        if (value === 'P') {
+          return '未公开';
+        } else {
+          if (value === 'M') {
+            return '男'
+          } else {
+            return '女'
+          }
+        }
+      }
     },
     watch: {
       $route() {

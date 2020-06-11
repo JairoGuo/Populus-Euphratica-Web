@@ -98,20 +98,25 @@
                 <sui-card-header>推荐文章</sui-card-header>
                 <sui-divider></sui-divider>
                 <sui-card-description>
+
+
                   <sui-item-group>
-                    <sui-item>
+                    <sui-item v-for="i in hottestArticles" :key="i.article_id">
+                      <!--        <sui-item-image size="tiny" src="static/images/wireframes/image.png" />-->
+                      <sui-item-content>
 
-                      <sui-item-content vertical-align="middle">Content A</sui-item-content>
+                        <sui-item-content>
+                          <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
+                                       style="color: #212121"
+                          >
+                            {{i.title}}
+                          </router-link>
+                        </sui-item-content>
+                      </sui-item-content>
                     </sui-item>
-                    <sui-item>
 
-                      <sui-item-content vertical-align="middle">Content B</sui-item-content>
-                    </sui-item>
-                    <sui-item>
-
-                      <sui-item-content vertical-align="middle">Content C</sui-item-content>
-                    </sui-item>
                   </sui-item-group>
+
 
                 </sui-card-description>
               </sui-card-content>
@@ -155,7 +160,8 @@
         next: '',
         previous: '',
         page: 1,
-        end: true
+        end: true,
+        hottestArticles: []
 
       }
     },
@@ -200,6 +206,17 @@
       //   console.log("create:", res.data.results)
       //   this.$loading.hide()
       // })
+
+      this.$api.blog.getArticleParamList({
+        username: this.username,
+        page: this.page,
+        size: 5,
+        status: 'P',
+        ordering: '-click_nums'
+      }).then(res => {
+        this.hottestArticles = res.data.results
+
+      })
 
 
     },

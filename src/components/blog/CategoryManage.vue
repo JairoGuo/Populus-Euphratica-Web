@@ -122,7 +122,7 @@
     },
     created() {
 
-      this.$api.blog.getCategory().then((res)=> {
+      this.$api.blog.getCategorys().then((res)=> {
         this.categorys = res.data
         // const category = res.data
         // for (let i in category) {

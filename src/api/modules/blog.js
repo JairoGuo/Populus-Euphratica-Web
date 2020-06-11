@@ -34,11 +34,18 @@ class Blog {
 
     }
 
-    getCategory() {
+    getCategorys() {
         const url = URLS.CATEGORY.LIST
         return http.get(url)
 
     }
+
+    getCategory(categoryId) {
+        const url = URLS.CATEGORY.READ + categoryId + '/'
+        return http.get(url)
+
+    }
+
 
     createCategory(postData) {
         const url = URLS.CATEGORY.CREATE
@@ -67,6 +74,26 @@ class Blog {
         const url = URLS.LIKE.CREATE
         return http.post(url, postData)
 
+    }
+
+    getClollect() {
+        const url = URLS.COLLECT.READ
+        return http.get(url)
+    }
+
+    getCollectCategory() {
+        const url = URLS.COLLECTCATEGORY.LIST
+        return http.get(url)
+    }
+
+    createCollectCategory(postData) {
+        const url = URLS.COLLECTCATEGORY.CREATE
+        return http.post(url, postData)
+    }
+
+    createCollect(postData) {
+        const url = URLS.COLLECT.CREATE
+        return http.post(url, postData)
     }
 
 }

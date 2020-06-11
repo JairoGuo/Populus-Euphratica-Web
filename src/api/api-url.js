@@ -20,6 +20,7 @@ const BLOG = {
 
 const CATEGORY = {
     LIST: 'blog/category/',
+    READ: 'blog/category/',
     CREATE: 'blog/category/',
     DELETE: 'blog/category/',
     UPDATE: 'blog/category/'
@@ -35,6 +36,16 @@ const LIKE = {
     CREATE: 'blog/likes/'
 }
 
+const COLLECT = {
+    CREATE: 'blog/collects/',
+    READ: 'blog/collects/'
+}
+
+const COLLECTCATEGORY = {
+    LIST: 'blog/collects-category/',
+    CREATE: 'blog/collects-category/'
+}
+
 const UPLOAD = {
     UPLOAD: 'upload-image/'
 }
@@ -45,6 +56,8 @@ export default {
     CATEGORY,
     COMMENT,
     UPLOAD,
-    LIKE
+    LIKE,
+    COLLECT,
+    COLLECTCATEGORY
 
 }

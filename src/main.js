@@ -29,6 +29,7 @@ Vue.use(ElemantUI)
 Vue.use(VueAxios, axios)
 Vue.use(Moment)
 Vue.use(mavonEditor)
+
 // Vue.use(Timeago)
 
 Vue.prototype.$api = api

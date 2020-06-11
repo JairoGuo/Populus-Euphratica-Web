@@ -303,7 +303,7 @@
 
         })
       }
-      this.$api.blog.getCategory().then((res)=> {
+      this.$api.blog.getCategorys().then((res)=> {
         const category = res.data
         for (let i in category) {
           this.categorys.push({text: category[i].name, value: category[i].id})

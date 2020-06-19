@@ -118,11 +118,14 @@
       }
     },
     computed: {
-      ...mapState('account', {userInfo: ACCOUNT.USER_INFO,})
+      ...mapState('account', {
+        userInfo: ACCOUNT.USER_INFO,
+        username: ACCOUNT.CURRENT_USERNAME,
+      })
     },
     created() {
 
-      this.$api.blog.getCategorys().then((res)=> {
+      this.$api.blog.getCategorys({username: this.username}).then((res)=> {
         this.categorys = res.data
         // const category = res.data
         // for (let i in category) {

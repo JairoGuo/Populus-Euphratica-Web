@@ -19,6 +19,13 @@
             content="分类专栏"
             @click.native="select('分类专栏')"
           />
+          <router-link
+            is="sui-menu-item"
+            :to="{name: 'CollectCategoryManage'}"
+            :active="isActive('收藏管理')"
+            content="收藏管理"
+            @click.native="select('收藏管理')"
+          />
 
         </div>
 

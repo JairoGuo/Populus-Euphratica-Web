@@ -2,7 +2,7 @@ import http from "@/utils/http";
 import URLS from "@/api/api-url";
 
 class Blog {
-    getArticleAllList(){
+    getArticleAllList() {
         const url = URLS.BLOG.LIST
         return http.get(url)
     }
@@ -34,9 +34,9 @@ class Blog {
 
     }
 
-    getCategorys() {
+    getCategorys(params) {
         const url = URLS.CATEGORY.LIST
-        return http.get(url)
+        return http.get(url, {params: params})
 
     }
 
@@ -76,14 +76,30 @@ class Blog {
 
     }
 
-    getClollect() {
-        const url = URLS.COLLECT.READ
-        return http.get(url)
+    getClollects(params) {
+        const url = URLS.COLLECT.LIST
+        return http.get(url, {params: params})
     }
 
-    getCollectCategory() {
+    deleteCollect(id) {
+        const url = URLS.COLLECT.DELETE + id + '/'
+        return http.delete(url)
+
+    }
+
+    getCollectCategory(params) {
         const url = URLS.COLLECTCATEGORY.LIST
-        return http.get(url)
+        return http.get(url, {params: params})
+    }
+
+    deleteCollectCategory(collectCategoryId) {
+        const url = URLS.COLLECTCATEGORY.DELETE + collectCategoryId + '/'
+        return http.delete(url)
+    }
+
+    updateCollectCategory(collectCategoryId, postData) {
+        const url = URLS.COLLECTCATEGORY.DELETE + collectCategoryId + '/'
+        return http.patch(url, postData)
     }
 
     createCollectCategory(postData) {
@@ -93,6 +109,11 @@ class Blog {
 
     createCollect(postData) {
         const url = URLS.COLLECT.CREATE
+        return http.post(url, postData)
+    }
+
+    createCategoryFollow(postData) {
+        const url = URLS.CATEGORYFOLLOW.CREATE
         return http.post(url, postData)
     }
 

@@ -38,12 +38,21 @@ const LIKE = {
 
 const COLLECT = {
     CREATE: 'blog/collects/',
-    READ: 'blog/collects/'
+    READ: 'blog/collects/',
+    LIST: 'blog/collects/',
+    DELETE: 'blog/collects/'
 }
 
 const COLLECTCATEGORY = {
     LIST: 'blog/collects-category/',
-    CREATE: 'blog/collects-category/'
+    CREATE: 'blog/collects-category/',
+    DELETE: 'blog/collects-category/',
+    UPDATE: 'blog/collects-category/',
+}
+
+const CATEGORYFOLLOW = {
+    CREATE: 'blog/category-follow/',
+
 }
 
 const UPLOAD = {
@@ -58,6 +67,7 @@ export default {
     UPLOAD,
     LIKE,
     COLLECT,
-    COLLECTCATEGORY
+    COLLECTCATEGORY,
+    CATEGORYFOLLOW
 
 }

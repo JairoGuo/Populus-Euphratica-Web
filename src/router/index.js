@@ -54,7 +54,7 @@ const routes = [
     {
         path: '/users/:username/blog',
         name: 'Blog',
-        component: () => import( '@/views/users/Blog'),
+        component: () => import( '@/views/blog/Blog'),
         meta: {
             title: '博客'
         }
@@ -117,17 +117,34 @@ const routes = [
                     title: '分类管理'
                 }
             },
+            {
+                path: 'collect',
+                name: 'CollectCategoryManage',
+                component: () => import('@/components/blog/CollectCategoryManage'),
+                meta: {
+                    title: '收藏管理'
+                },
+
+            },
+            {
+                path: 'collect/:id',
+                name: 'CollectManage',
+                component: () => import('@/components/blog/CollectManage'),
+                meta: {
+                    title: '收藏管理'
+                }
+            },
         ],
 
     },
-    // {
-    //     path: '/manage/articles-manage',
-    //     name: 'Manage',
-    //     component: () => import( '@/views/blog/Manage'),
-    //     meta: {
-    //         title: '内容管理'
-    //     }
-    // }
+    {
+        path: '/users/:username/collect/:id',
+        name: 'BlogCollectView',
+        component: () => import( '@/views/blog/BlogCollectView'),
+        meta: {
+            title: '收藏夹'
+        }
+    }
 ]
 
 const router = new VueRouter({

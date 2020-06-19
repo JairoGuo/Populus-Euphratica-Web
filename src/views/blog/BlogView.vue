@@ -224,9 +224,7 @@
                   size="tiny"
                   :src="require('@/assets/images/category.png')"
                   floated="left"
-
                 />
-
 
                 <sui-card-header style="margin-top: 10px">{{category.name}}</sui-card-header>
                 <sui-card-meta>专栏</sui-card-meta>
@@ -238,7 +236,7 @@
 
                   <sui-statistic horizontal size="mini">
                     <sui-statistic-value>
-                      2204
+                      {{category.category_follow_num}}
                     </sui-statistic-value>
                     <sui-statistic-label>
                       关注
@@ -259,7 +257,9 @@
               <sui-card-content extra>
                 <sui-container text-align="center">
 
-                  <sui-button fluid positive>关注专栏</sui-button>
+                  <sui-button fluid  :color="!isCategoryFollow ? 'green': null"  @click="createCategoryFollow()">
+                    {{isCategoryFollow ? '取消关注专栏' :'关注专栏'}}
+                  </sui-button>
                   <br>
                   <sui-button fluid basic negative>专栏主页</sui-button>
                 </sui-container>
@@ -268,7 +268,6 @@
 
             </sui-card>
           </sui-grid-row>
-
           <sui-grid-row style="padding-bottom: 14px; padding-top: 14px; ">
 
 
@@ -283,28 +282,17 @@
 
             </sui-card>
           </sui-grid-row>
-
           <sui-grid-row style="padding-top: 14px; padding-bottom: 14px">
-
-
             <sui-card style="box-shadow: none">
               <sui-card-content>
                 <sui-card-header>相关文章</sui-card-header>
-
                 <sui-card-description>
-
                 </sui-card-description>
               </sui-card-content>
-
             </sui-card>
           </sui-grid-row>
-
-
         </sui-grid-column>
-
       </sui-grid>
-
-
     </sui-container>
 
   </div>
@@ -313,7 +301,6 @@
 <script>
   import {ACCOUNT} from "@/store/types"
   import {mapState} from "vuex"
-
 
   var timeago = require('timeago.js');
 
@@ -343,27 +330,22 @@
           name: '',
           description: '',
           type: 'Public'
-        }
-
+        },
+        isCategoryFollow: false
       }
 
     },
     methods: {
 
       toggle() {
-
         if (this.logStatus) {
-
           if (this.collectCategory === null) {
-            this.$api.blog.getCollectCategory().then((res) => {
+            this.$api.blog.getCollectCategory({username: this.username}).then((res) => {
               this.collectCategory = res.data
               console.log(res.data)
             });
-
           }
-
           this.open = !this.open
-
         } else {
           this.$message.warning("请登录后收藏")
         }
@@ -378,68 +360,50 @@
         this.$api.blog.getArticle(this.$route.params.id).then(res => {
           this.articles = res.data
           this.isCollect = res.data.is_collect
+          this.isCategoryFollow = res.data.is_category_follow
+
           document.title = res.data.title
-          // this.$api.getUser(res.data)
-
           this.collectCategoryValue = res.data.collect_category
-
           console.log(res.data.collect_category)
-
           if (res.data.category) {
             this.$api.blog.getCategory(res.data.category).then((res) => {
               this.category = res.data
             });
-
           }
-
           this.$loading.hide()
-
-
         })
-
       },
       createComment() {
-
-
         if (this.logStatus) {
           let postData = {
             blog_id: this.$route.params.id,
             content: this.commentContent,
             reply_comment: this.commentId
-          };
+          }
 
           this.$api.blog.createComment(postData).then((res) => {
 
-
             if (this.commentId === null) {
               this.articles.comments.push(res.data);
-
             } else {
-              console.log('reply')
-              console.log(this.articles.comments.findIndex(item => item.id === this.commentId))
               this.articles.comments[this.articles.comments.findIndex(
                 item => item.id === this.commentId)].replies.push(res.data)
-
             }
 
             this.$message.success('评论成功')
+            this.articles.comment_num += 1
+
             this.replyTips = ''
             this.commentId = null
             this.commentContent = ''
           }).catch(() => {
             this.$message.error('评论失败')
-
-          });
-
+          })
         } else {
           this.$message.warning('请登录后评论')
-
         }
-
-
       },
       createCollect() {
-
           let postData = {
             article: this.$route.params.id,
             category: this.collectCategoryValue
@@ -451,11 +415,9 @@
             if (!res.data.is_collect) {
               this.articles.collect_num -= 1
               this.$message.success('删除收藏成功');
-
             } else {
               this.articles.collect_num += 1
               this.$message.success('收藏成功');
-
             }
             this.toggle()
           })
@@ -465,10 +427,8 @@
         if (this.logStatus) {
           this.replyTips = '回复：' + username;
           this.commentId = commentId;
-
         } else {
           this.$message.warning('请登录后回复')
-
         }
 
       },
@@ -484,30 +444,37 @@
         } else {
           this.$message.warning('请登录后点赞')
         }
-
-
       },
 
       focusComment() {
         if (this.logStatus) {
           this.$refs.commentTextarea.focus();
-
         } else {
           this.$message.warning('请登录后评论')
         }
       },
 
       createCollectCategory() {
-        // TODO: 创建收藏夹
 
         this.$api.blog.createCollectCategory(this.collectCategoryData).then((res) => {
-
           this.collectCategory.push(res.data)
           this.switchAdd()
         })
+      },
+
+      createCategoryFollow() {
+        this.$api.blog.createCategoryFollow({category: this.category.id}).then((res)=>{
+
+          if (!this.isCategoryFollow) {
+
+            this.$message.success('关注专栏成功');
+          } else {
+            this.$message.success('取消关注专栏成功');
+          }
+          this.isCategoryFollow = res.data.isCategoryFollow
+
+        })
       }
-
-
     },
 
     created() {
@@ -515,7 +482,6 @@
       // });
 
       this.getBlogData()
-
     },
     mounted() {
       // $(this.$el).find('.ui.sticky').sticky({
@@ -523,13 +489,11 @@
       //   pushing: true
       // })
 
-
       window.onresize = () => {
         return (() => {
           this.currentHeight = document.body.clientHeight - 270
         })();
       }
-
     },
     filters: {
       changeTime(val) {
@@ -540,7 +504,8 @@
     computed: {
       ...mapState('account', {
         defaultAvatar: ACCOUNT.DEFAULT_AVATAR,
-        logStatus: ACCOUNT.LOG_STATUS
+        logStatus: ACCOUNT.LOG_STATUS,
+        username: ACCOUNT.LOG_IN_USERNAME
 
       }),
       readTime() {

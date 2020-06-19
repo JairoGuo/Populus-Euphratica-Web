@@ -337,7 +337,7 @@
       }),
     },
     created() {
-      this.getArticles(null)
+      this.getArticles(null, this.$route.params.category)
       this.getTopArticles()
       this.$api.blog.getCategorys().then((res) => {
         this.categorys = res.data

@@ -56,7 +56,7 @@
 
             <sui-statistic size="mini">
               <sui-statistic-value>
-                233
+                {{userInfo.articles_num}}
               </sui-statistic-value>
               <sui-statistic-label>
                 文章
@@ -355,17 +355,43 @@
         <sui-tab-pane class="tab-pane" label="23" title="我的圈子(Dev stage)">
           我的圈子
         </sui-tab-pane>
-        <sui-tab-pane class="tab-pane" label="4" title="我的收藏(Dev stage)">
-          我的收藏
+
+        <sui-tab-pane class="tab-pane" :label="userInfo.collect_num.toString()" align="left" title="我的收藏">
+          <sui-item-group divided>
+            <sui-item  v-for="i in collectCategory" :key="i.id">
+              <!--        <sui-item-image size="tiny" src="static/images/wireframes/image.png" />-->
+              <sui-item-content>
+
+                <router-link
+                  is="sui-header"
+                  :to="{name: 'BlogCollectView', params: {username: $route.params.username, id: i.id, collectCategory: i.name} }">
+                  {{i.name}} <sui-label  style="margin-left: 10px" basic circular  size="mini">{{i.collect_num}}</sui-label>
+                </router-link>
+
+
+                <sui-item-content>
+                  {{i.description}}
+                </sui-item-content>
+              </sui-item-content>
+            </sui-item>
+
+          </sui-item-group>
+
         </sui-tab-pane>
         <sui-tab-pane class="tab-pane" :label="userInfo.category_num.toString()" align="left" title="我的专栏">
           <sui-item-group divided>
             <sui-item  v-for="i in categorys" :key="i.id">
               <!--        <sui-item-image size="tiny" src="static/images/wireframes/image.png" />-->
               <sui-item-content>
-                <sui-item-header href="javascript:void(0)">
-                  {{i.name}}
-                </sui-item-header>
+
+
+                  <router-link
+                    is="sui-header"
+                    :to="{name: 'Blog', params: {username: $route.params.username, category: i.id} }">
+                    {{i.name}}
+                  </router-link>
+
+
                 <sui-item-content>
                   {{i.summary}}
                 </sui-item-content>
@@ -420,14 +446,15 @@
         end: false,
         top: true,
         next: null,
-        previous: null
+        previous: null,
+        collectCategory: []
 
 
       }
     },
     created() {
       this.getUserInfo(this.$route.params.username)
-      this.$api.blog.getCategorys().then((res)=> {
+      this.$api.blog.getCategorys({username: this.username}).then((res)=> {
         this.categorys = res.data
         // const category = res.data
         // for (let i in category) {
@@ -438,6 +465,7 @@
 
     },
     methods: {
+
       getColor: function () {
         let colorSet = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue',
           'violet', 'purple', 'pink', 'brown', 'grey', 'black']
@@ -459,6 +487,10 @@
             this.page = 1
             this.getArticles()
             break
+          case 4:
+            this.page = 4
+            this.getCollectCategory()
+            break
 
         }
 
@@ -472,6 +504,15 @@
           this.end = res.data.next === null
 
           this.$loading.hide()
+        })
+      },
+
+      getCollectCategory() {
+        this.$loading.show();
+        this.$api.blog.getCollectCategory({username: this.username}).then((res)=> {
+          this.collectCategory = res.data
+          this.$loading.hide()
+
         })
       },
 

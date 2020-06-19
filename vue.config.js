@@ -1,6 +1,6 @@
 const path =  require('path');
 const resolve = (dir) => path.join(__dirname, dir);
-const webpack = require('webpack')
+// const webpack = require('webpack')
 
 module.exports = {
     devServer: {
@@ -31,9 +31,9 @@ module.exports = {
 
     },
 
-    pluginOptions: new webpack.ProvidePlugin({
-        jQuery: "jquery",
-        $: "jquery"
-    })
+    // pluginOptions: new webpack.ProvidePlugin({
+    //     jQuery: "jquery",
+    //     $: "jquery"
+    // })
 
 }

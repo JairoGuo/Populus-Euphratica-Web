@@ -38,6 +38,7 @@
       </sui-menu-item>
 
       <sui-menu-menu position="right" v-if="!logStatus" key="logout">
+<!--      <sui-menu-menu position="right" v-if="!isLogInStatus" key="logout">-->
 
         <sui-menu-item>
           <sui-dropdown
@@ -173,6 +174,8 @@
 <script>
   // import EditorNavBar from "./EditorNavBar";
   import {mapActions, mapState} from 'vuex'
+  import auth from "@/utils/auth"
+
 
   import NavBarBase from '@/components/NavBarBase'
 
@@ -247,6 +250,9 @@
     },
     computed: {
       ...mapState('account', ['logStatus', 'userInfo', 'defaultAvatar']),
+      isLogInStatus(){
+        return auth.is_authed
+      }
     },
     created() {
 

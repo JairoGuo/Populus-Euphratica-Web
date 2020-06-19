@@ -1,7 +1,7 @@
 <template>
   <div>
     <sui-tab active-index="0" @change="handleChange">
-      <sui-tab-pane label="14" icon="users" title="全部">
+      <sui-tab-pane :label="userInfo.article_by_all.toString()" icon="users" title="全部">
         <sui-item-group>
           <sui-item v-for="i in articles" :key="i.article_id">
 
@@ -48,7 +48,7 @@
         </sui-menu>
 
       </sui-tab-pane>
-      <sui-tab-pane label="0" title="已发表">
+      <sui-tab-pane :label="userInfo.article_by_p.toString()" title="已发表">
 
         <sui-item-group>
           <sui-item v-for="i in articles" :key="i.article_id">
@@ -94,7 +94,7 @@
           </sui-menu-menu>
         </sui-menu>
       </sui-tab-pane>
-      <sui-tab-pane icon="check" label="14" title="草稿">
+      <sui-tab-pane icon="check" :label="userInfo.article_by_d.toString()" title="草稿">
         <sui-item-group>
           <sui-item v-for="i in articles" :key="i.article_id">
 
@@ -197,6 +197,7 @@
     computed: {
       ...mapState('account', {
         username: ACCOUNT.LOG_IN_USERNAME,
+        userInfo: ACCOUNT.USER_INFO
       }),
     },
     created() {

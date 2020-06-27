@@ -23,8 +23,12 @@ const state = {
     // }
     logStatus: false,
     loginUsername: '',
+    loginUserId: '',
     userInfo: {},
+
     currentUsername: '',
+    currentUserId: '',
+    isFollow: '',
     defaultAvatar: require("@/assets/images/default-avatar.png"),
     isUserInfoEditing: {
         Archives: false,
@@ -63,6 +67,7 @@ const actions = {
             const refresh_token = res.data.refresh_token
             auth.setUserToken(user, access_token, refresh_token)
             commit(ACCOUNT.SET_LOGIN_USERNAME, res.data.user.username)
+            commit(ACCOUNT.SET_LOGIN_USER_ID, res.data.user.id)
             dispatch(ACCOUNT.GO_LOG_STATUS)
             dispatch(ACCOUNT.GO_USER_INFO, state.loginUsername)
         })
@@ -83,6 +88,8 @@ const actions = {
         api.account.getUser(user_id).then((res) => {
             commit(ACCOUNT.SET_USER_INFO, res.data)
             commit(ACCOUNT.SET_CURRENT_USERNAME, res.data.username)
+            commit(ACCOUNT.SET_CURRENT_USER_ID, res.data.id)
+            commit(ACCOUNT.SET_IS_FOLLOW, res.data.is_follow)
             document.title = res.data.username
             loading.hide()
 
@@ -115,8 +122,18 @@ const mutations = {
     [ACCOUNT.SET_CURRENT_USERNAME](state, username) {
         state.currentUsername = username
     },
+    [ACCOUNT.SET_CURRENT_USER_ID](state, userId) {
+        state.currentUserId = userId
+    },
+
     [ACCOUNT.SET_USERINFO_EDIT_STATUS](state, key) {
         state.isUserInfoEditing[key] = !state.isUserInfoEditing[key]
+    },
+    [ACCOUNT.SET_IS_FOLLOW](state, followStatus) {
+        state.isFollow = followStatus
+    },
+    [ACCOUNT.SET_LOGIN_USER_ID](state, loginUserId) {
+        state.loginUserId = loginUserId
 
     }
 

@@ -340,7 +340,7 @@
       toggle() {
         if (this.logStatus) {
           if (this.collectCategory === null) {
-            this.$api.blog.getCollectCategory({username: this.username}).then((res) => {
+            this.$api.blog.getCollectCategorys({username: this.username}).then((res) => {
               this.collectCategory = res.data
               console.log(res.data)
             });

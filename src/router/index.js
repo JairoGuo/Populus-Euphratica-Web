@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 Vue.use(VueRouter)
 
@@ -49,7 +50,69 @@ const routes = [
     {
         path: "/users/:username",
         name: "UserDetail",
-        component: () => import('../views/UserDetail.vue'),
+        component: () => import('../views/users/UserDetail.vue'),
+        redirect: {name: 'UserProfile'},
+        children: [
+
+            {
+                path: "profile",
+                name: "UserProfile",
+                component: () => import('@/components/users/UserProfile'),
+                meta: {
+                    title: '个人档案'
+                }
+            },
+
+            {
+                path: "article",
+                name: "UserArticle",
+                component: () => import('@/components/users/UserArticle'),
+                meta: {
+                    title: '我的博客'
+                }
+            },
+            {
+                path: "category",
+                name: "UserCategory",
+                component: () => import('@/components/users/UserCategory'),
+                meta: {
+                    title: '我的专栏'
+                }
+            },
+            {
+                path: "collect",
+                name: "UserCollect",
+                component: () => import('@/components/users/UserCollect'),
+                meta: {
+                    title: '我的收藏'
+                }
+            },
+            {
+                path: "category-follow",
+                name: "UserCategoryFollow",
+                component: () => import('@/components/users/UserCategoryFollow'),
+                meta: {
+                    title: '我关注的专栏'
+                }
+            },
+            {
+                path: "follow",
+                name: "UserFollow",
+                component: () => import('@/components/users/UserFollow'),
+                meta: {
+                    title: '我的关注'
+                }
+            },
+            {
+                path: "fans",
+                name: "UserFans",
+                component: () => import('@/components/users/UserFans'),
+                meta: {
+                    title: '我的粉丝'
+                }
+            },
+
+        ]
     },
     {
         path: '/users/:username/blog',
@@ -144,6 +207,15 @@ const routes = [
         meta: {
             title: '收藏夹'
         }
+    },
+
+    {
+        path: '/users/:username/category-follow/:id',
+        name: 'CategoryFollowView',
+        component: () => import( '@/views/blog/CategoryFollowView'),
+        meta: {
+            title: '关注专栏'
+        }
     }
 ]
 
@@ -152,9 +224,15 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
     /* 路由发生变化修改页面title */
+    NProgress.start()
+    next()
     if (to.meta.title) {
         document.title = to.meta.title
     }
     next()
+})
+
+router.afterEach(() => {
+    NProgress.done()
 })
 export default router

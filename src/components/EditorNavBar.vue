@@ -28,7 +28,7 @@
 
 <script>
   // import $ from 'jquery'
-  import NavBarBase from "@/components/NavBarBase";
+  import NavBarBase from "@/layouts/NavBarBase";
 
   export default {
     name: "EditorNavBar",

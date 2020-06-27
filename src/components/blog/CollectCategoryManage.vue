@@ -64,7 +64,7 @@
     methods: {
       getCollectCategory(collectCategoryType = null) {
         this.$loading.show();
-        this.$api.blog.getCollectCategory({username: this.username, type: collectCategoryType}).then((res) => {
+        this.$api.blog.getCollectCategorys({username: this.username, type: collectCategoryType}).then((res) => {
           this.collectCategory = res.data
           this.$loading.hide()
 

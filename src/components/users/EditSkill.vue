@@ -37,7 +37,7 @@
       return {
         current: this.$store.state.users.skill.split(','),
 
-        skill: "A,B,C",
+        skill: "",
 
         skills: [
           {key: 'angular', text: 'Angular', value: 'angular'},

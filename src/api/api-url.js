@@ -9,6 +9,15 @@ const ACCOUNT = {
     USER: 'accounts/user/'
 }
 
+const USERFOLLOW = {
+    CREATE: 'accounts/user-follow/',
+    LIST: 'accounts/user-follow/'
+}
+
+const USERFANS = {
+    LIST: 'accounts/user-fans/'
+}
+
 
 const BLOG = {
     LIST: 'blog/articles-list/',
@@ -45,6 +54,7 @@ const COLLECT = {
 
 const COLLECTCATEGORY = {
     LIST: 'blog/collects-category/',
+    READ: 'blog/collects-category/',
     CREATE: 'blog/collects-category/',
     DELETE: 'blog/collects-category/',
     UPDATE: 'blog/collects-category/',
@@ -52,6 +62,8 @@ const COLLECTCATEGORY = {
 
 const CATEGORYFOLLOW = {
     CREATE: 'blog/category-follow/',
+    READ: 'blog/category-follow/',
+    LIST: 'blog/category-follow/',
 
 }
 
@@ -61,6 +73,7 @@ const UPLOAD = {
 
 export default {
     ACCOUNT,
+    USERFOLLOW,
     BLOG,
     CATEGORY,
     COMMENT,
@@ -68,6 +81,7 @@ export default {
     LIKE,
     COLLECT,
     COLLECTCATEGORY,
-    CATEGORYFOLLOW
+    CATEGORYFOLLOW,
+    USERFANS
 
 }

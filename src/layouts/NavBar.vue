@@ -87,7 +87,7 @@
         </sui-menu-item>
 
         <sui-menu-item class="horizontally fitted item">
-          <sui-dropdown class="teal" style="border-radius: 30px;" :text="$t('nav.create')" button floating>
+          <sui-dropdown class="teal" :text="$t('nav.create')" button floating>
             <sui-dropdown-menu>
 
               <router-link is="sui-dropdown-item" to="/editor">
@@ -177,7 +177,7 @@
   import auth from "@/utils/auth"
 
 
-  import NavBarBase from '@/components/NavBarBase'
+  import NavBarBase from '@/layouts/NavBarBase'
 
   export default {
     name: "NavBar",

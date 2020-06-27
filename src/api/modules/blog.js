@@ -87,7 +87,7 @@ class Blog {
 
     }
 
-    getCollectCategory(params) {
+    getCollectCategorys(params) {
         const url = URLS.COLLECTCATEGORY.LIST
         return http.get(url, {params: params})
     }
@@ -107,6 +107,11 @@ class Blog {
         return http.post(url, postData)
     }
 
+    getCollectCategory(collectCategoryId) {
+        const url = URLS.COLLECTCATEGORY.READ + collectCategoryId + '/'
+        return http.get(url)
+    }
+
     createCollect(postData) {
         const url = URLS.COLLECT.CREATE
         return http.post(url, postData)
@@ -115,6 +120,16 @@ class Blog {
     createCategoryFollow(postData) {
         const url = URLS.CATEGORYFOLLOW.CREATE
         return http.post(url, postData)
+    }
+
+    getCategoryFollow(CategoryFollowId) {
+        const url = URLS.CATEGORYFOLLOW.READ + CategoryFollowId + '/'
+        return http.get(url)
+    }
+
+    getCategoryFollows(params) {
+        const url = URLS.CATEGORYFOLLOW.LIST
+        return http.get(url, {params: params})
     }
 
 }

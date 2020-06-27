@@ -4,15 +4,15 @@
       <sui-grid align="left">
 
         <sui-grid-column :width="11">
-          <sui-header>{{collectCategory}}</sui-header>
+          <sui-header>{{categoryFollowName}}</sui-header>
           <sui-divider></sui-divider>
           <sui-item-group>
-            <sui-item v-for="i in collects" :key="i.id">
+            <sui-item v-for="i in categoryFollowArticles" :key="i.id">
 
               <sui-item-content>
                 <sui-item-header>
                   <router-link target="_blank"
-                               :to="{name: 'BlogView', params: { id: i.article }}"
+                               :to="{name: 'BlogView', params: { id: i.article_id }}"
                                style="color: #212121">
                     {{i.title}}
                   </router-link>
@@ -20,7 +20,7 @@
 
                 <sui-item-description>
                   <p>
-                    <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article }}"
+                    <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}"
                                  style="color: #888"
                     >
                       {{i.abstract | wordLimit}}
@@ -34,7 +34,7 @@
 
                 </sui-item-extra>
               </sui-item-content>
-              <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article }}" style="color: #888">
+              <router-link target="_blank" :to="{name: 'BlogView', params: { id: i.article_id }}" style="color: #888">
                 <sui-item-image class="cover-img"
                                 :style="{'background-image': 'url('+ i.cover +')',
                                 width: '180px',
@@ -86,14 +86,15 @@
 
 <script>
   import filters from "../../filters";
+
   export default {
-    name: "BlogCollectView",
+    name: "CategoryFollowView",
     components: {},
     props: {},
     data() {
       return {
-        collects: [],
-        collectCategory: '',
+        categoryFollowArticles: [],
+        categoryFollowName: '',
         page: 1,
         end: false,
         top: true,
@@ -102,8 +103,12 @@
       }
     },
     computed: {},
-    created() {
-      this.getCollects()
+    async created() {
+       await this.$api.blog.getCategoryFollow(this.$route.params.id).then(res => {
+        this.categoryFollowName = res.data.category_name
+        this.categoryFollowCategoryId = res.data.category
+      })
+      await this.getCategoryFollowArticles()
     },
     mounted() {
     },
@@ -111,26 +116,23 @@
       changePage(flag) {
         if (flag) {
           this.page += 1
-          this.getCollects()
+          this.getCategoryFollowArticles()
 
         } else {
           this.page -= 1
-          this.getCollects()
+          this.getCategoryFollowArticles()
 
         }
       },
-      getCollects() {
+      getCategoryFollowArticles() {
         this.$loading.show();
 
-        this.$api.blog.getCollectCategory(this.$route.params.id).then(res => {
-          this.collectCategory = res.data.name
-        })
-
-        this.$api.blog.getClollects({
-          collectcategory: this.$route.params.id,
+        this.$api.blog.getArticleParamList({
+          category: this.categoryFollowCategoryId,
           page: this.page,
+          status: 'P'
         }).then((res) => {
-          this.collects = res.data.results
+          this.categoryFollowArticles = res.data.results
           this.top = res.data.previous === null
           this.end = res.data.next === null
           this.$loading.hide()

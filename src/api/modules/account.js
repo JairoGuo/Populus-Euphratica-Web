@@ -39,6 +39,22 @@ class Account {
         return http.patch(url, data)
     }
 
+    createUserFollow(userId) {
+        const url = URLS.USERFOLLOW.CREATE
+        return http.post(url, {follow_to: userId})
+
+    }
+
+    getFollow(followUserId) {
+        const url = URLS.USERFOLLOW.LIST
+        return http.get(url, {params: {follow: followUserId}})
+    }
+
+    getFans(followUserToId) {
+        const url = URLS.USERFANS.LIST
+        return http.get(url, {params: {follow_to: followUserToId}})
+    }
+
 
 }
 

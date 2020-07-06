@@ -99,7 +99,7 @@
                 <sui-label style="margin-top: 5px; margin-bottom: 5px"
                            size="mini"
                            :color="getColor()"
-                           v-for="skill in userInfo.skill.split(',')"
+                           v-for="skill in userInfo.skill"
                            :key="skill">{{skill}}
                 </sui-label>
               </div>

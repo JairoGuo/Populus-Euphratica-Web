@@ -42,54 +42,85 @@
 
     </sui-item-group>
 
-    <sui-modal v-model="open" size="tiny">
-      <sui-modal-header>创建分类专栏</sui-modal-header>
-      <sui-modal-content>
 
-        <sui-modal-description>
-          <sui-form>
-            <sui-form-field>
-              <label>名称</label>
-              <input v-model="category.name" placeholder="名称" />
-            </sui-form-field>
-            <sui-form-field>
-              <label>介绍</label>
-              <textarea v-model="category.summary" placeholder="介绍" />
-            </sui-form-field>
 
-          </sui-form>
-        </sui-modal-description>
-      </sui-modal-content>
-      <sui-modal-actions>
-        <sui-button @click.native="toggle()">
-          取消
-        </sui-button>
-        <sui-button positive @click.native="confirmCreate">
-          创建
-        </sui-button>
-      </sui-modal-actions>
-    </sui-modal>
+    <modal-base v-model="open" @onConfirm="confirmCreate" title="创建分类专栏" confirmButton="创建" size="tiny">
+      <template v-slot:content>
+        <sui-form>
+          <sui-form-field>
+            <label>名称</label>
+            <input v-model="category.name" placeholder="名称" />
+          </sui-form-field>
+          <sui-form-field>
+            <label>介绍</label>
+            <textarea v-model="category.summary" placeholder="介绍" />
+          </sui-form-field>
 
-    <sui-modal v-model="isDelete" size="mini">
-      <sui-modal-header>警告</sui-modal-header>
-      <sui-modal-content>
+        </sui-form>
 
-        <sui-modal-description>
-          <sui-header>是否删除该分类？</sui-header>
-          <p>
-            删除后不可撤销
-          </p>
-        </sui-modal-description>
-      </sui-modal-content>
-      <sui-modal-actions>
-        <sui-button @click.native="toggleDelete">
-          取消
-        </sui-button>
-        <sui-button negative @click.native="confirmDelete">
-          确认删除
-        </sui-button>
-      </sui-modal-actions>
-    </sui-modal>
+      </template>
+    </modal-base>
+
+
+<!--    <sui-modal v-model="open" size="tiny">-->
+<!--      <sui-modal-header>创建分类专栏</sui-modal-header>-->
+<!--      <sui-modal-content>-->
+
+<!--        <sui-modal-description>-->
+<!--          <sui-form>-->
+<!--            <sui-form-field>-->
+<!--              <label>名称</label>-->
+<!--              <input v-model="category.name" placeholder="名称" />-->
+<!--            </sui-form-field>-->
+<!--            <sui-form-field>-->
+<!--              <label>介绍</label>-->
+<!--              <textarea v-model="category.summary" placeholder="介绍" />-->
+<!--            </sui-form-field>-->
+
+<!--          </sui-form>-->
+<!--        </sui-modal-description>-->
+<!--      </sui-modal-content>-->
+<!--      <sui-modal-actions>-->
+<!--        <sui-button @click.native="toggle()">-->
+<!--          取消-->
+<!--        </sui-button>-->
+<!--        <sui-button positive @click.native="confirmCreate">-->
+<!--          创建-->
+<!--        </sui-button>-->
+<!--      </sui-modal-actions>-->
+<!--    </sui-modal>-->
+
+
+    <message-modal
+      title="警告"
+      header="是否删除该分类？"
+      content="删除后不可撤销"
+      v-model="isDelete"
+      size="mini"
+      @onConfirm="confirmDelete"
+    />
+
+
+<!--    <sui-modal v-model="isDelete" size="mini">-->
+<!--      <sui-modal-header>警告</sui-modal-header>-->
+<!--      <sui-modal-content>-->
+
+<!--        <sui-modal-description>-->
+<!--          <sui-header>是否删除该分类？</sui-header>-->
+<!--          <p>-->
+<!--            删除后不可撤销-->
+<!--          </p>-->
+<!--        </sui-modal-description>-->
+<!--      </sui-modal-content>-->
+<!--      <sui-modal-actions>-->
+<!--        <sui-button @click.native="toggleDelete">-->
+<!--          取消-->
+<!--        </sui-button>-->
+<!--        <sui-button negative @click.native="confirmDelete">-->
+<!--          确认删除-->
+<!--        </sui-button>-->
+<!--      </sui-modal-actions>-->
+<!--    </sui-modal>-->
 
 
   </div>
@@ -98,10 +129,15 @@
 <script>
   import {mapState} from "vuex";
   import {ACCOUNT} from "@/store/types";
+  import MessageModal from "@/components/common/MessageModal";
+  import ModalBase from '@/components/common/ModalBase'
 
   export default {
     name: "CategoryManage",
-    components: {},
+    components: {
+      MessageModal,
+      ModalBase
+    },
     props: {},
     data() {
       return {
@@ -183,7 +219,6 @@
           this.$message.success('创建分类成功')
           this.category.name = ''
           this.category.summary = ''
-
 
         }).catch(()=>{
           this.$message.success('创建分类失败')

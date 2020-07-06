@@ -10,89 +10,161 @@
         </div>
       </sui-menu-item>
 
-      <sui-modal v-model="open">
-        <sui-modal-header>发表</sui-modal-header>
-        <sui-modal-content>
-          <sui-modal-description>
-            <sui-form>
+<!--      <sui-modal v-model="open">-->
+<!--        <sui-modal-header>发表</sui-modal-header>-->
+<!--        <sui-modal-content>-->
+<!--          <sui-modal-description>-->
+<!--            <sui-form>-->
 
-              <sui-form-fields fields="two">
-                <!--文章分类-->
-                <sui-form-field>
-                  <label>文章分类</label>
-                  <sui-dropdown
-                    placeholder="分类"
-                    selection
-                    :options="categorys"
-                    v-model="article_data.category"/>
+<!--              <sui-form-fields fields="two">-->
+<!--                &lt;!&ndash;文章分类&ndash;&gt;-->
+<!--                <sui-form-field>-->
+<!--                  <label>文章分类</label>-->
+<!--                  <sui-dropdown-->
+<!--                    placeholder="分类"-->
+<!--                    selection-->
+<!--                    :options="categorys"-->
+<!--                    v-model="article_data.category"/>-->
 
-                </sui-form-field>
-                <!--文章标签-->
-                <sui-form-field>
-                  <label>文章标签</label>
-                  <sui-dropdown
-                    multiple
-                    fluid
-                    :options="skills"
-                    placeholder="标签"
-                    search
-                    selection
-                    allow-additions
-                    v-model="article_data.tags"
-                  />
-                </sui-form-field>
-              </sui-form-fields>
+<!--                </sui-form-field>-->
+<!--                &lt;!&ndash;文章标签&ndash;&gt;-->
+<!--                <sui-form-field>-->
+<!--                  <label>文章标签</label>-->
+<!--                  <sui-dropdown-->
+<!--                    multiple-->
+<!--                    fluid-->
+<!--                    :options="skills"-->
+<!--                    placeholder="标签"-->
+<!--                    search-->
+<!--                    selection-->
+<!--                    allow-additions-->
+<!--                    v-model="article_data.tags"-->
+<!--                  />-->
+<!--                </sui-form-field>-->
+<!--              </sui-form-fields>-->
 
 
+<!--              <sui-form-field>-->
+<!--                <label>文章摘要</label>-->
+<!--                <textarea v-model="article_data.abstract"></textarea>-->
+<!--              </sui-form-field>-->
+
+<!--              <sui-form-fields inline>-->
+<!--                <label>文章类型:</label>-->
+<!--                <sui-form-field>-->
+<!--                  <sui-checkbox @click="switchOriginalUrlStatus(false)"-->
+<!--                                radio-->
+<!--                                v-model="article_data.type"-->
+<!--                                label="原创"-->
+<!--                                value="Original"/>-->
+<!--                </sui-form-field>-->
+<!--                <sui-form-field>-->
+<!--                  <sui-checkbox @click="switchOriginalUrlStatus(true)"-->
+<!--                                radio-->
+<!--                                v-model="article_data.type"-->
+<!--                                label="转载"-->
+<!--                                value="Reprint"/>-->
+<!--                </sui-form-field>-->
+<!--                <sui-form-field>-->
+<!--                  <sui-checkbox @click="switchOriginalUrlStatus(true)"-->
+<!--                                radio-->
+<!--                                v-model="article_data.type"-->
+<!--                                label="翻译"-->
+<!--                                value="Translation"/>-->
+<!--                </sui-form-field>-->
+
+<!--              </sui-form-fields>-->
+
+<!--              <sui-form-field v-show="isShowOriginalUrl">-->
+<!--                <label>原文链接</label>-->
+<!--                <sui-input placeholder="文章地址" v-model="article_data.original_url"></sui-input>-->
+<!--              </sui-form-field>-->
+<!--            </sui-form>-->
+
+<!--          </sui-modal-description>-->
+<!--        </sui-modal-content>-->
+
+<!--        <sui-modal-actions>-->
+<!--          <sui-button positive @click.native="createArticcle()">-->
+<!--            发表-->
+<!--          </sui-button>-->
+<!--          <sui-button @click.native="toggle">-->
+<!--            取消-->
+<!--          </sui-button>-->
+<!--        </sui-modal-actions>-->
+<!--      </sui-modal>-->
+
+      <modal-base v-model="open" @onConfirm="createArticcle" title="创建分类专栏" confirmButton="发表">
+        <template v-slot:content>
+          <sui-form>
+
+            <sui-form-fields fields="two">
+              <!--文章分类-->
               <sui-form-field>
-                <label>文章摘要</label>
-                <textarea v-model="article_data.abstract"></textarea>
+                <label>文章分类</label>
+                <sui-dropdown
+                  placeholder="分类"
+                  selection
+                  :options="categorys"
+                  v-model="article_data.category"/>
+
+              </sui-form-field>
+              <!--文章标签-->
+              <sui-form-field>
+                <label>文章标签</label>
+                <sui-dropdown
+                  multiple
+                  fluid
+                  :options="skills"
+                  placeholder="标签"
+                  search
+                  selection
+                  allow-additions
+                  v-model="article_data.tags"
+                />
+              </sui-form-field>
+            </sui-form-fields>
+
+            <sui-form-field>
+              <label>文章摘要</label>
+              <textarea v-model="article_data.abstract"></textarea>
+            </sui-form-field>
+
+            <sui-form-fields inline>
+              <label>文章类型:</label>
+              <sui-form-field>
+                <sui-checkbox @click="switchOriginalUrlStatus(false)"
+                              radio
+                              v-model="article_data.type"
+                              label="原创"
+                              value="Original"/>
+              </sui-form-field>
+              <sui-form-field>
+                <sui-checkbox @click="switchOriginalUrlStatus(true)"
+                              radio
+                              v-model="article_data.type"
+                              label="转载"
+                              value="Reprint"/>
+              </sui-form-field>
+              <sui-form-field>
+                <sui-checkbox @click="switchOriginalUrlStatus(true)"
+                              radio
+                              v-model="article_data.type"
+                              label="翻译"
+                              value="Translation"/>
               </sui-form-field>
 
-              <sui-form-fields inline>
-                <label>文章类型:</label>
-                <sui-form-field>
-                  <sui-checkbox @click="switchOriginalUrlStatus(false)"
-                                radio
-                                v-model="article_data.type"
-                                label="原创"
-                                value="Original"/>
-                </sui-form-field>
-                <sui-form-field>
-                  <sui-checkbox @click="switchOriginalUrlStatus(true)"
-                                radio
-                                v-model="article_data.type"
-                                label="转载"
-                                value="Reprint"/>
-                </sui-form-field>
-                <sui-form-field>
-                  <sui-checkbox @click="switchOriginalUrlStatus(true)"
-                                radio
-                                v-model="article_data.type"
-                                label="翻译"
-                                value="Translation"/>
-                </sui-form-field>
+            </sui-form-fields>
 
-              </sui-form-fields>
+            <sui-form-field v-show="isShowOriginalUrl">
+              <label>原文链接</label>
+              <sui-input placeholder="文章地址" v-model="article_data.original_url"></sui-input>
+            </sui-form-field>
+          </sui-form>
+        </template>
 
-              <sui-form-field v-show="isShowOriginalUrl">
-                <label>原文链接</label>
-                <sui-input placeholder="文章地址" v-model="article_data.original_url"></sui-input>
-              </sui-form-field>
-            </sui-form>
+      </modal-base>
 
-          </sui-modal-description>
-        </sui-modal-content>
-
-        <sui-modal-actions>
-          <sui-button positive @click.native="createArticcle()">
-            发表
-          </sui-button>
-          <sui-button @click.native="toggle">
-            取消
-          </sui-button>
-        </sui-modal-actions>
-      </sui-modal>
 
     </editor-nav-bar>
 
@@ -123,9 +195,14 @@
   import EditorNavBar from "../../components/EditorNavBar";
   import {ACCOUNT} from "@/store/types";
   import {mapState} from "vuex"
+  import ModalBase from '@/components/common/ModalBase'
 
   export default {
     name: "Editor",
+    components: {
+      EditorNavBar,
+      ModalBase
+    },
     data() {
       return {
         article_data: {
@@ -202,7 +279,6 @@
         this.open = !this.open;
       },
       async createArticcle() {
-
 
         if (this.$route.params.article) {
           this.$loading.show()
@@ -290,7 +366,10 @@
 
     },
     computed: {
-      ...mapState('account', {userInfo: ACCOUNT.USER_INFO,})
+      ...mapState('account', {
+        userInfo: ACCOUNT.USER_INFO,
+        username: ACCOUNT.LOG_IN_USERNAME,
+      })
     },
     created() {
       if (this.$route.params.article) {
@@ -303,7 +382,7 @@
 
         })
       }
-      this.$api.blog.getCategorys().then((res)=> {
+      this.$api.blog.getCategorys({username: this.username}).then((res)=> {
         const category = res.data
         for (let i in category) {
           this.categorys.push({text: category[i].name, value: category[i].id})
@@ -319,10 +398,7 @@
       }
 
     },
-    components: {
-      EditorNavBar,
-      // ArticlePostModal
-    }
+
   };
 </script>
 

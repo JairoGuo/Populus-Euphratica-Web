@@ -1,8 +1,8 @@
 const path =  require('path');
 const resolve = (dir) => path.join(__dirname, dir);
-// const webpack = require('webpack')
 
 module.exports = {
+
     devServer: {
         open: true,
         host: process.env.VUE_APP_URL,

@@ -216,6 +216,14 @@ const routes = [
         meta: {
             title: '关注专栏'
         }
+    },
+    {
+        path: '/category/:id',
+        name: 'CategoryListView',
+        component: () => import( '@/views/blog/CategoryListView'),
+        meta: {
+            title: '专栏'
+        }
     }
 ]
 

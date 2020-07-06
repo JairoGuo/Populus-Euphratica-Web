@@ -12,12 +12,9 @@
           selection
           allow-additions
           v-model="current"
-
         />
 
-
       </sui-form-field>
-
 
       <sui-button @click="setEditStatus(editType.Skill)" floated="right">取消</sui-button>
       <sui-button type="submit" @click="submit()" color="green" floated="right">保存</sui-button>
@@ -28,14 +25,15 @@
 </template>
 
 <script>
-// todo: 待定改造
+  // todo: 待定改造
   import {mapState, mapMutations, mapActions} from 'vuex'
   import {ACCOUNT} from "@/store/types";
+
   export default {
     name: "EditSkill",
     data() {
       return {
-        current: this.$store.state.users.skill.split(','),
+        current: [],
 
         skill: "",
 
@@ -61,7 +59,7 @@
         ],
       };
     },
-     computed: {
+    computed: {
       ...mapState('account', {
         editType: ACCOUNT.EDIT_TYPE,
         userInfo: ACCOUNT.USER_INFO
@@ -69,6 +67,7 @@
     },
     created() {
       this.init()
+      this.current = this.userInfo.skill
     },
     methods: {
       ...mapMutations('account', {
@@ -79,10 +78,10 @@
       }),
       init() {
         this.skill = this.userInfo.skill
-    },
+      },
       submit() {
 
-        this.updateUserInfo({"skill": this.current.join(',')})
+        this.updateUserInfo({"skill": this.current})
         this.setEditStatus(this.editType.Skill)
       }
     }

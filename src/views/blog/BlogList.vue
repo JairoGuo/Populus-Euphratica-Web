@@ -64,7 +64,7 @@
 
                   <span>{{i.created_at | changeTime}}</span>
 
-                  <span class="ui right floated"><sui-icon name="eye"/>{{i.click_nums}}</span>
+                  <span class="ui right floated"><sui-icon name="eye"/>{{i.click_num}}</span>
                   <span class="ui  right floated"><sui-icon name="comment"/>{{i.comment_num}}</span>
                   <span class="ui  right floated"><sui-icon name="thumbs up"/>{{i.like_num}}</span>
 
@@ -150,6 +150,9 @@
   import {ACCOUNT} from "@/store/types";
   import {mapState} from "vuex"
 
+  import '@/assets/scss/cover.scss'
+
+
   export default {
     name: 'BlogList',
     components: {InfiniteLoading},
@@ -230,17 +233,8 @@
 
 </script>
 
-<style lang="scss">
-  .cover-img {
-    width: 180px;
-    height: 120px;
-    border-radius: 4px;
-    float: right;
-    margin-left: 30px;
-    margin-top: 10px;
-    background-size: cover;
-    background-position: center
-  }
+<style scoped lang="scss">
+
 
 
   .el-carousel__item h3 {

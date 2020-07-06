@@ -11,7 +11,7 @@
           取消
         </sui-button>
         <sui-button positive @click.native="confirm()">
-          确定
+          {{confirmButton}}
         </sui-button>
       </slot>
     </sui-modal-actions>
@@ -27,13 +27,17 @@
       title: {
         type: String,
       },
+      confirmButton: {
+        type: String,
+        default: '确定'
+      },
       value: {
         type: Boolean,
         default: false
       },
       size: {
         type: String,
-        default: 'tiny'
+        default: 'standard'
       }
 
 

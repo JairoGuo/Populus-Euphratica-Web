@@ -50,13 +50,9 @@
             <sui-form-field>
               <sui-checkbox radio v-model="collectCategoryData.type" label="私密" value="Private"/>
             </sui-form-field>
-
           </sui-form-fields>
-
         </sui-form>
-
       </template>
-
     </modal-base>
 
     <!--    <sui-modal v-model="editCollectCategoryVisable" size="tiny">-->

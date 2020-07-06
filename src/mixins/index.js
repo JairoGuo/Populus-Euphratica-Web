@@ -1,10 +1,7 @@
-import $ from "jquery";
+import changePage from "@/mixins/changePage";
 
-$(function() {
 
-    $('.ui.sticky').sticky({
-        context: '#example2',
-        pushing: true
-    })
+export {
+    changePage,
 
-})
+}

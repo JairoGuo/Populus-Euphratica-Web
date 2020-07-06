@@ -76,19 +76,18 @@
   import {mapState} from "vuex";
   import {ACCOUNT} from "../../store/types";
   import filters from "../../filters";
+  import '@/assets/scss/cover.scss'
+
+  import changePage from "@/mixins/changePage";
 
   export default {
     name: "UserArticle",
     components: {},
+    mixins: [changePage],
     props: {},
     data() {
       return {
         articles: [],
-        page: 1,
-        end: false,
-        top: true,
-        next: null,
-        previous: null,
       }
     },
     computed: {
@@ -123,16 +122,9 @@
         })
       },
 
-      changePage(flag) {
-        if (flag) {
-          this.page += 1
-          this.getArticles()
-        } else {
-          this.page -= 1
-          this.getArticles()
-
-        }
-      }
+      changePageCallback() {
+        this.getArticles()
+      },
     },
     filters: {
       ...filters,

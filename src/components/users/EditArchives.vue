@@ -1,7 +1,6 @@
 <template>
 
 
-
     <sui-card-content style="background-color: #FCF8E3;">
       <sui-form align="left">
 
@@ -85,7 +84,6 @@
           website: '',
           name: '',
           education: '',
-          email: '',
           birthday: '',
           sex: ''
         }

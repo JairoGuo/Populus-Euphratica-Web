@@ -9,10 +9,10 @@
           <a is="sui-list-header">{{i.username}}</a>
 
         </sui-list-content>
-        <sui-button v-if="i.mutual_follow" basic floated="right" color="green" size="mini" @click="createUserFollow(i.user_id)">
+        <sui-button v-show="i.mutual_follow" basic floated="right" color="green" size="mini" @click="createUserFollow(i)">
           互相关注
         </sui-button>
-        <sui-button v-else basic floated="right" color="red" size="mini" @click="createUserFollow(i.user_id)">
+        <sui-button v-show="!i.mutual_follow" basic floated="right" color="red" size="mini" @click="createUserFollow(i)">
          关注
         </sui-button>
 
@@ -55,16 +55,17 @@
     },
     methods: {
       getFans() {
-        this.$api.account.getFans(this.loginUserId).then(res => {
+        this.$api.account.getFans(this.userId).then(res => {
           this.fansList = res.data
         })
       },
 
-      createUserFollow(userId) {
-
-        this.$api.account.createUserFollow(userId).then((res) => {
+      createUserFollow(user) {
+        console.log(user.user_id)
+        this.$api.account.createUserFollow(user.user_id).then((res) => {
 
           console.log(res.data)
+          user.mutual_follow = !user.mutual_follow
         })
       },
     },

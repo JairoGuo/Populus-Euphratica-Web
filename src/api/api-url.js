@@ -6,7 +6,8 @@ const ACCOUNT = {
     ME: 'users/me/',
     LOGIN: "accounts/login/",
     LOGOUT: "accounts/logout/",
-    USER: 'accounts/user/'
+    USER: 'accounts/user/',
+    SIGNUP: 'accounts/register/'
 }
 
 const USERFOLLOW = {

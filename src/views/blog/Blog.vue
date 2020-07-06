@@ -22,10 +22,6 @@
                 <sui-button color="orange" size=mini>{{$t('user.reward')}}</sui-button>
               </div>
 
-
-
-
-
             </sui-card-content>
             <sui-card-content align="center">
               <div>
@@ -296,6 +292,8 @@
 
 <script>
   import filters from "@/filters";
+  import {changePage} from '@/mixins/'
+  import '@/assets/scss/cover.scss'
 
   import {ACCOUNT} from "@/store/types";
   import {mapState} from "vuex"
@@ -303,19 +301,14 @@
   export default {
     name: "Blog",
     components: {
-
     },
+    mixins: [changePage],
     props: {},
     data() {
       return {
         categorys: [],
         articles: [],
         blog: [],
-        page: 1,
-        end: false,
-        top: true,
-        next: null,
-        previous: null,
         active: '默认',
         isForCategory: false,
         hottestArticles: [],
@@ -351,17 +344,10 @@
     },
     methods: {
 
-      changePage(flag) {
-        if (flag) {
-          this.page += 1
-          this.getArticles(this.active, this.categoryId, this.orderName)
-
-        } else {
-          this.page -= 1
-          this.getArticles(this.active, this.categoryId, this.orderName)
-
-        }
+      changePageCallback() {
+        this.getArticles(this.active, this.categoryId, this.orderName)
       },
+
 
       getArticles(name, categoryId=null, orderName=null) {
         this.desc = !this.desc
@@ -424,15 +410,6 @@
 </script>
 
 <style scoped>
-  .cover-img {
-    width: 180px;
-    height: 120px;
-    border-radius: 4px;
-    float: right;
-    margin-left: 30px;
-    margin-top: 10px;
-    background-size: cover;
-    background-position: center
-  }
+
 
 </style>

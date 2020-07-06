@@ -13,7 +13,7 @@ import mavonEditor from 'mavon-editor'
 import 'element-ui/lib/theme-chalk/index.css'
 import '../node_modules/semantic-ui-css/semantic.min.css'
 import 'mavon-editor/dist/css/index.css'
-// import 'semantic-ui-css/semantic.min.css'
+// import 'semantic-ui-scss/semantic.min.scss'
 
 
 import api from '@/api'
@@ -21,7 +21,7 @@ import store from "@/store"
 import loading from "@/utils/loading"
 import message from "@/utils/message"
 import auth from "@/utils/auth"
-import i18n from '@/assets/lang'
+import i18n from '@/lang'
 
 // Vue.use(JsCookies)
 Vue.use(SuiVue);

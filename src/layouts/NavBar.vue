@@ -256,7 +256,6 @@
     },
     created() {
 
-
       this.active_url = window.location.href.split("/")[4];
       if (this.active_url === "") {
         this.active = this.$t('nav.blog')

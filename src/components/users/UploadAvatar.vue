@@ -42,6 +42,9 @@
 </template>
 
 <script>
+  import {ACCOUNT} from "@/store/types";
+  import {mapActions, mapState} from "vuex";
+
   export default {
     data() {
       return {
@@ -53,7 +56,15 @@
         limitNum: 1
       };
     },
+
+    computed: {
+      ...mapState('account', {
+        userInfo: ACCOUNT.USER_INFO,
+        username: ACCOUNT.LOG_IN_USERNAME,
+      })
+    },
     methods: {
+      ...mapActions('account', {getUserInfo: ACCOUNT.GO_USER_INFO}),
       handleRemove(file, fileList) {
         console.log(file, fileList)
         this.hideUpload = false
@@ -66,22 +77,17 @@
         let formData = new FormData();
 
         formData.append('avatar', this.imageUrl)
-        this.axios.patch('api/users/' + this.$store.state.loginInfo.username + '/', formData, {
+        this.axios.patch('api/users/' + this.username + '/', formData, {
           'Content-Type': 'multipart/form-data'
-        }).then(function () {
-
+        }).then(() => {
           console.log('suss')
+          this.getUserInfo(this.$route.params.username)
 
-        })
-        this.axios.get("/api/users/" + this.$route.params.username + "/").then(response => {
-          this.$store.commit("setUsers", response.data)
-          this.currentUser = response.data.username
         })
         this.toggle()
       },
       imgChange(file, fileList) {
         this.imageUrl = file.raw
-
         this.hideUpload = fileList.length >= this.limitNum;
 
       },

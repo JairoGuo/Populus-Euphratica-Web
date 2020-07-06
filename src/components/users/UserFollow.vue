@@ -9,7 +9,10 @@
           <a is="sui-list-header">{{i.username}}</a>
 
         </sui-list-content>
-        <sui-button basic floated="right" :color="i.mutual_follow ? 'green' : null" size="mini" @click="createUserFollow(i.user_id)">
+        <sui-button v-show="i.isFollow" basic floated="right" color="red" size="mini" @click="createUserFollow(i)">
+          关注
+        </sui-button>
+        <sui-button v-show="!i.isFollow"  basic floated="right" :color="i.mutual_follow ? 'green' : null" size="mini" @click="createUserFollow(i)">
           {{i.mutual_follow ? '互相关注' : '取消关注'}}
         </sui-button>
 
@@ -51,16 +54,16 @@
     },
     methods: {
       getFollow() {
-        this.$api.account.getFollow(this.loginUserId).then(res=>{
+        this.$api.account.getFollow(this.userId).then(res=>{
           this.followList = res.data
-          console.log(res.data)
+
         })
       },
-      createUserFollow(userId) {
+      createUserFollow(user) {
 
-        this.$api.account.createUserFollow(userId).then((res) => {
-
-          console.log(res.data)
+        this.$api.account.createUserFollow(user.user_id).then((res) => {
+          user.mutual_follow = res.data.mutual_follow
+          user.isFollow = !res.data.is_follow
         })
       },
     },

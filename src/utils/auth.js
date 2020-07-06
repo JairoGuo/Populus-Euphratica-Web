@@ -36,11 +36,7 @@ class Auth {
     }
 
     get is_authed() {
-        if (this.user && this.token) {
-            return true
-        } else {
-            return false
-        }
+        return !!(this.user && this.token);
     }
 }
 

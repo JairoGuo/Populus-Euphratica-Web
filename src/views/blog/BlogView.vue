@@ -261,7 +261,11 @@
                     {{isCategoryFollow ? '取消关注专栏' :'关注专栏'}}
                   </sui-button>
                   <br>
-                  <sui-button fluid basic negative>专栏主页</sui-button>
+                  <router-link
+                    :to="{name: 'CategoryListView', params: { id: category.id }}"
+                    fluid basic negative is="sui-button">
+                    专栏主页
+                  </router-link>
                 </sui-container>
               </sui-card-content>
 
@@ -342,7 +346,7 @@
           if (this.collectCategory === null) {
             this.$api.blog.getCollectCategorys({username: this.username}).then((res) => {
               this.collectCategory = res.data
-              console.log(res.data)
+
             });
           }
           this.open = !this.open
@@ -359,12 +363,14 @@
         this.$loading.show()
         this.$api.blog.getArticle(this.$route.params.id).then(res => {
           this.articles = res.data
+          console.log(res.data)
           this.isCollect = res.data.is_collect
           this.isCategoryFollow = res.data.is_category_follow
 
+
           document.title = res.data.title
           this.collectCategoryValue = res.data.collect_category
-          console.log(res.data.collect_category)
+
           if (res.data.category) {
             this.$api.blog.getCategory(res.data.category).then((res) => {
               this.category = res.data
@@ -411,7 +417,7 @@
           this.$api.blog.createCollect(postData).then((res) =>{
             this.isCollect = res.data.is_collect
 
-            console.log(res.data)
+
             if (!res.data.is_collect) {
               this.articles.collect_num -= 1
               this.$message.success('删除收藏成功');

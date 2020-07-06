@@ -13,6 +13,12 @@ class Account {
         return http.post(url)
     }
 
+    signUp(data) {
+        const url = URLS.ACCOUNT.SIGNUP
+        return http.post(url, data)
+
+    }
+
     getUsers() {
         const url = URLS.ACCOUNT.LIST
         return http.get(url)

@@ -171,19 +171,16 @@
   import moment from "moment";
   import {mapState} from "vuex";
   import {ACCOUNT} from "@/store/types";
-
+  import {changePage} from '@/mixins/'
   export default {
     name: "ArticlesManage",
     components: {},
+    mixins: [changePage],
+
     props: {},
     data() {
       return {
         articles: [],
-        end: false,
-        top: true,
-        next: null,
-        previous: null,
-        page: 1,
         open: false,
         articleId: '',
         activeIndex: null,
@@ -269,15 +266,12 @@
           this.$loading.hide()
         })
       },
-      changePage(flag) {
-        if (flag) {
-          this.page += 1
-          this.getArticles()
-        } else {
-          this.page -= 1
-          this.getArticles()
-        }
+
+
+      changePageCallback() {
+        this.getArticles()
       },
+
       deleteArticle(articleId) {
         this.toggle()
         this.articleId = articleId

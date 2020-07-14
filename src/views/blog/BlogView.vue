@@ -158,20 +158,16 @@
               <sui-card-content>
                 <sui-comment-group class="ui fluid" style="max-width: none">
                   <sui-form reply>
-                    <textarea ref="commentTextarea" v-model="commentContent" :placeholder="replyTips"/>
+                    <label>
+                      <textarea ref="commentTextarea" v-model="commentContent" :placeholder="replyTips"/>
+                    </label>
                     <br>
                     <br>
-
-
                     <sui-button
-                      floated="right"
-                      content="发表评论"
-
-                      primary
-                      @click="createComment()"
-                    />
+                      positive
+                      @click="createComment()">发表评论</sui-button>
                   </sui-form>
-                  <sui-comment v-for="i in articles.comments" :key="i.id">
+                  <sui-comment v-for="i in comments" :key="i.id">
                     <sui-comment-avatar :src="i.avatar ? i.avatar: defaultAvatar"/>
                     <sui-comment-content>
                       <a is="sui-comment-author">{{i.username}}</a>
@@ -318,6 +314,7 @@
           avatar: '',
           comments: null
         },
+        comments: [],
         category: {},
         md_toc: '',
         currentHeight: document.body.clientHeight - 270,
@@ -379,6 +376,11 @@
           this.$loading.hide()
         })
       },
+      getComments() {
+        this.$api.blog.getComments(this.$route.params.article_id).then((res)=>{
+          this.comments = res.data
+        })
+      },
       createComment() {
         if (this.logStatus) {
           let postData = {
@@ -386,13 +388,13 @@
             content: this.commentContent,
             reply_comment: this.commentId
           }
+          console.log(postData)
 
           this.$api.blog.createComment(postData).then((res) => {
-
             if (this.commentId === null) {
-              this.articles.comments.push(res.data);
+              this.comments.push(res.data);
             } else {
-              this.articles.comments[this.articles.comments.findIndex(
+              this.comments[this.comments.findIndex(
                 item => item.id === this.commentId)].replies.push(res.data)
             }
 
@@ -488,6 +490,7 @@
       // });
 
       this.getBlogData()
+      this.getComments()
     },
     mounted() {
       // $(this.$el).find('.ui.sticky').sticky({

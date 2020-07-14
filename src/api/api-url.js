@@ -38,6 +38,7 @@ const CATEGORY = {
 
 const COMMENT = {
 
+    LIST: 'blog/comments/',
     CREATE: 'blog/comments/'
 }
 
@@ -72,6 +73,10 @@ const UPLOAD = {
     UPLOAD: 'upload-image/'
 }
 
+const CHAT = {
+    CREATE: 'chat/message/'
+}
+
 export default {
     ACCOUNT,
     USERFOLLOW,
@@ -83,6 +88,7 @@ export default {
     COLLECT,
     COLLECTCATEGORY,
     CATEGORYFOLLOW,
-    USERFANS
+    USERFANS,
+    CHAT
 
 }

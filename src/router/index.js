@@ -40,6 +40,14 @@ const routes = [
         component: () => import( '../views/blog/BlogView')
     },
     {
+        path: '/chat',
+        name: 'MessageList',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import( '../views/chat/MessageList')
+    },
+    {
         path: "/login",
         name: "LogIn",
         component: () => import('../views/LogIn.vue'),

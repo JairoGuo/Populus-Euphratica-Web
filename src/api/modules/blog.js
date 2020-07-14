@@ -63,6 +63,11 @@ class Blog {
         return http.delete(url)
     }
 
+
+    getComments(articleId) {
+        const url = URLS.COMMENT.LIST
+        return http.get(url, {params: {blog_id: articleId}})
+    }
     createComment(postData) {
         const url = URLS.COMMENT.CREATE
         return http.post(url, postData)

@@ -8,6 +8,11 @@ class Chat {
         return http.post(url, postData)
     }
 
+    getMessages(receiver) {
+        const url = URLS.CHAT.LIST
+        return http.get(url, {params: {receiver: receiver}})
+    }
+
 }
 
 export default new Chat()

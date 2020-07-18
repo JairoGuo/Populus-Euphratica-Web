@@ -5,7 +5,6 @@
     </div>
 
     <router-view style="padding-top: 20px"/>
-    <div></div>
   </div>
 </template>
 

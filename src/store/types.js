@@ -32,12 +32,18 @@ const ACCOUNT = {
     GET_IS_LOG_IN: 'getIsLogIn'
 }
 
-const BLOG ={
+const BLOG = {}
 
+const CHAT = {
+    // MUTATION
+    SET_RECEIVER: 'setReceiver',
+    SET_RECEIVER_ID: 'setReceiverId',
+    SET_RECEIVER_INFO: 'setReceiverInfo',
 
 }
 
 export {
     ACCOUNT,
-    BLOG
+    BLOG,
+    CHAT
 }

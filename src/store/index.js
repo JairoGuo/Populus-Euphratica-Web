@@ -2,12 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createVuexAlong from 'vuex-along'
 
-import account from './modules/account'
-
+import account from '@/store/modules/account'
+import chat from "@/store/modules/chat";
 Vue.use(Vuex)
 export default new Vuex.Store({
     modules: {
         account,
+        chat
     },
      plugins: [
         createVuexAlong({

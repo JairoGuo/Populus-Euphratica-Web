@@ -74,7 +74,8 @@ const UPLOAD = {
 }
 
 const CHAT = {
-    CREATE: 'chat/message/'
+    CREATE: 'chat/message/',
+    LIST: 'chat/message/'
 }
 
 export default {

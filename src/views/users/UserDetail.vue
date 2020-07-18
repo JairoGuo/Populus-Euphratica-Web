@@ -68,7 +68,7 @@
             <sui-button size=mini :color="isFollow ? null : 'green'" @click="createUserFollow()">
               {{isFollow ? '取消关注':$t('user.follow' )}}
             </sui-button>
-            <sui-button size=mini>{{$t('user.privateMessage')}}</sui-button>
+            <sui-button @click="privateMessage" size=mini>{{$t('user.privateMessage')}}</sui-button>
             <sui-button color="orange" size=mini>{{$t('user.reward')}}</sui-button>
           </div>
 
@@ -207,7 +207,7 @@
 
   import UploadAvatar from "../../components/users/UploadAvatar";
   import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
-  import {ACCOUNT} from "@/store/types"
+  import {ACCOUNT, CHAT} from "@/store/types"
   import filters from "@/filters";
 
   export default {
@@ -236,6 +236,11 @@
       ...mapMutations('account', {
         setIsFollow: ACCOUNT.SET_IS_FOLLOW
       }),
+      ...mapMutations('chat', {
+        setReceiver: CHAT.SET_RECEIVER,
+        setReceiverId: CHAT.SET_RECEIVER_ID,
+        setReceiverInfo: CHAT.SET_RECEIVER_INFO
+      }),
       createUserFollow() {
         console.log(this.userId)
 
@@ -244,7 +249,12 @@
           console.log(res.data)
         })
       },
-
+      privateMessage() {
+        this.setReceiver(this.username)
+        this.setReceiverId(this.userId)
+        this.setReceiverInfo(this.userInfo)
+        this.$router.push({name: 'MessageList'})
+      },
 
       isActive(name) {
         return this.active === name;

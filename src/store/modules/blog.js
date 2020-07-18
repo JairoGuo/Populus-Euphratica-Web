@@ -1,5 +1,4 @@
 
-import api from '@/api'
 const state = {
     modalStatus: false,
 

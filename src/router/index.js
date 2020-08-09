@@ -216,7 +216,6 @@ const routes = [
             title: '收藏夹'
         }
     },
-
     {
         path: '/users/:username/category-follow/:id',
         name: 'CategoryFollowView',
@@ -236,7 +235,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes
+    // mode: 'history',
+    routes: routes
 })
 router.beforeEach((to, from, next) => {
     /* 路由发生变化修改页面title */

@@ -31,7 +31,7 @@ http.interceptors.response.use(response => {
     if(err.response.status === 401) {
         auth.clearUserToken()
         mapMutations('account', ACCOUNT.SET_LOG_STATUS, false)
-        router.replace("/logout").then(() => {
+        router.replace("accounts/logout/").then(() => {
             message.error('身份过期，请重新登录')
 
 

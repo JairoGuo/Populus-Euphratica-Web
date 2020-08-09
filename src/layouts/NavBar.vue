@@ -138,7 +138,7 @@
             <sui-dropdown-menu>
               <sui-header>{{$auth.user.username}}</sui-header>
               <sui-divider></sui-divider>
-              <router-link is="sui-dropdown-item" to="/users/me">
+              <router-link is="sui-dropdown-item" :to="{name: 'UserDetail', params:{username: 'me'}}">
                 <sui-icon name="user"/>
                 {{$t('nav.homepage')}}
               </router-link>

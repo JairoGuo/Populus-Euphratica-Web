@@ -15,7 +15,7 @@
     "jquery": "^3.5.1",
     "mavon-editor": "^2.9.0",
     "md5": "^2.3.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "nprogress": "^0.2.0",
     "reconnecting-websocket": "^4.4.0",
     "semantic-ui-css": "^2.4.1",
